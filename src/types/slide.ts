@@ -1,5 +1,18 @@
 import { SlideObject } from "./objects";
 
+type Slide = {
+    id: string;
+    name: string;
+    description: string;
+    background: Background;
+    objects: SlideObject[];
+};
+
+type Background =
+    | ColorBackground
+    | ImageBackground
+    | GradientBackground;
+
 type ColorBackground = {
     type: 'color';
     color: string;
@@ -14,19 +27,6 @@ type GradientBackground = {
     type: 'gradient';
     colors: string[];
     angle: number;
-};
-
-type Background =
-    | ColorBackground
-    | ImageBackground
-    | GradientBackground;
-
-type Slide = {
-    id: string;
-    name: string;
-    description: string;
-    background: Background;
-    objects: SlideObject[];
 };
 
 const defaultBackground: Background = {

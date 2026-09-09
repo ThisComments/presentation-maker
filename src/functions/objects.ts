@@ -1,36 +1,29 @@
 import type { Slide  } from "../types/slide"
-import type { TextObject, MediaObject, SlideObject, MediaType  } from "../types/objects"
+import type { 
+    TextObject, 
+    MediaObject, 
+    MediaType, 
+    Point, 
+    Size, 
+    TextStyle  
+} from "../types/objects"
 
 function addTextObject(
     slide: Slide,
     objectId: string,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
+    position: Point,
+    size: Size,
     text: string,
-    fontFamily: string,
-    fontSize: number,
-    color: string
+    textStyle: TextStyle
 ): Slide
 {
     const newObject: TextObject = {
         id: objectId,
-        position: {
-            x,
-            y
-        },
-        size: {
-            width,
-            height
-        },
+        position,
+        size,
         type: 'text',
         text,
-        textStyle: {
-            fontFamily,
-            fontSize,
-            color
-        }
+        textStyle
     };
 
     return {
@@ -45,24 +38,16 @@ function addTextObject(
 function addMediaObject(
     slide: Slide,
     objectId: string,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
+    position: Point,
+    size: Size,
     src: string,
     mediaType: MediaType
 ): Slide
 {
     const newObject: MediaObject = {
         id: objectId,
-        position: {
-            x,
-            y
-        },
-        size: {
-            width,
-            height
-        },
+        position,
+        size,
         type: 'media',
         src,
         mediaType
@@ -93,109 +78,107 @@ function removeObject(
 function moveObject(
     slide: Slide,
     objectId: string,
-    newX: number,
-    newY: number
+    newPosition: Point
 ): Slide 
 {
-    const oldObject = slide.objects.find(
-        object => objectId === object.id
-    );
+    let objectFound = false;
 
-    if (!oldObject)
+    const objects = slide.objects.map(object =>
+    {
+        if (object.id !== objectId)
+        {
+            return object;
+        }
+
+        objectFound = true;
+
+        return {
+            ...object,
+            position: newPosition
+        };
+    });
+
+    if (!objectFound)
     {
         return slide;
     }
 
-    const newObject: SlideObject = {
-        ...oldObject,
-        position: {
-            x: newX,
-            y: newY
-        }
-    }
-
     return {
         ...slide,
-        objects: slide.objects.map(
-            object => object.id === objectId
-                ? newObject
-                : object
-        )
-    }
+        objects
+    };
 }
 
 function resizeObject(
     slide: Slide,
     objectId: string,
-    newWidth: number,
-    newHeight: number
+    newSize: Size
 ): Slide 
 {
-    if (newWidth < 0 || newHeight < 0)
+    if (newSize.height < 0 || newSize.width < 0)
     {
         return slide;
     }
 
-    const oldObject = slide.objects.find(
-        object => objectId === object.id
-    );
+    let objectFound = false;
 
-    if (!oldObject)
+    const objects = slide.objects.map(object =>
     {
-        return slide;
-    }
-
-    const newObject: SlideObject = {
-        ...oldObject,
-        size: {
-            width: newWidth,
-            height: newHeight
+        if (object.id !== objectId)
+        {
+            return object;
         }
+
+        objectFound = true;
+
+        return {
+            ...object,
+            size: newSize
+        };
+    });
+
+    if (!objectFound)
+    {
+        return slide;
     }
 
     return {
         ...slide,
-        objects: slide.objects.map(
-            object => object.id === objectId
-                ? newObject
-                : object
-        )
-    }
+        objects
+    };
 }
 
 function updateTextObjectStyle(
     slide: Slide,
     objectId: string,
-    fontFamily: string,
-    fontSize: number,
-    fontColor: string
+    newTextStyle: TextStyle
 ): Slide
 {
-    const oldTextObject = slide.objects.find(
-        object => object.id === objectId && object.type === 'text'
-    );
+    let objectFound = false;
 
-    if (!oldTextObject)
+    const objects = slide.objects.map(object =>
+    {
+        if (object.id !== objectId)
+        {
+            return object;
+        }
+
+        objectFound = true;
+
+        return {
+            ...object,
+            textStyle: newTextStyle
+        };
+    });
+
+    if (!objectFound)
     {
         return slide;
     }
 
-    const newTextObject = {
-        ...oldTextObject,
-        textStyle: {
-            fontFamily,
-            fontSize,
-            color: fontColor
-        }
-    };
-
     return {
         ...slide,
-        objects: slide.objects.map(
-            object => object.id === objectId
-                ? newTextObject
-                : object
-        )
+        objects
     };
 }
 
