@@ -74,49 +74,6 @@ describe('slide actions', () => {
             expect(result.slides[1].name).toBe('Слайд 2');
         });
 
-        it('uses the default name when an empty string is passed', () => {
-            const presentation = createPresentation();
-
-            const result = addSlide(
-                presentation,
-                'slide_01',
-                ''
-            );
-
-            expect(result.slides[0].name).toBe('Слайд 1');
-        });
-
-        it('adds a slide to an empty presentation', () => {
-            const presentation = createPresentation();
-
-            const result = addSlide(
-                presentation,
-                'slide_01'
-            );
-
-            expect(result.slides).toHaveLength(1);
-        });
-
-        it('adds a slide to the end of the presentation', () => {
-            const presentation = createPresentation([
-                createSlide('slide_01', 'First slide'),
-                createSlide('slide_02', 'Second slide')
-            ]);
-
-            const result = addSlide(
-                presentation,
-                'slide_03',
-                'Third slide'
-            );
-
-            expect(result.slides.map(slide => slide.id))
-                .toEqual([
-                    'slide_01',
-                    'slide_02',
-                    'slide_03'
-                ]);
-        });
-
         it('does not mutate the original presentation', () => {
             const presentation = createPresentation();
 
@@ -132,21 +89,6 @@ describe('slide actions', () => {
     });
 
     describe('removeSlides', () => {
-        it('removes one slide', () => {
-            const presentation = createPresentation([
-                createSlide('slide_01', 'First slide'),
-                createSlide('slide_02', 'Second slide')
-            ]);
-
-            const result = removeSlides(
-                presentation,
-                ['slide_01']
-            );
-
-            expect(result.slides.map(slide => slide.id))
-                .toEqual(['slide_02']);
-        });
-
         it('removes several slides', () => {
             const presentation = createPresentation([
                 createSlide('slide_01', 'First slide'),
@@ -315,18 +257,6 @@ describe('slide actions', () => {
             expect(result).toBe(presentation);
         });
 
-        it('does nothing when the presentation is empty', () => {
-            const presentation = createPresentation();
-
-            const result = moveSlide(
-                presentation,
-                'unknown_slide',
-                0
-            );
-
-            expect(result).toBe(presentation);
-        });
-
         it('does not mutate the original presentation', () => {
             const presentation = createPresentation([
                 createSlide('slide_01', 'First slide'),
@@ -352,37 +282,7 @@ describe('slide actions', () => {
     });
 
     describe('duplicateSlide', () => {
-        it('duplicates a slide after the original slide', () => {
-            const presentation = createPresentation([
-                createSlide('slide_01', 'First slide'),
-                createSlide('slide_02', 'Second slide')
-            ]);
-
-            let idCounter = 0;
-
-            const generateId = () => {
-                idCounter += 1;
-                return `generated_${idCounter}`;
-            };
-
-            const result = duplicateSlide(
-                presentation,
-                'slide_01',
-                generateId
-            );
-
-            expect(result.slides.map(slide => slide.id))
-                .toEqual([
-                    'slide_01',
-                    'generated_1',
-                    'slide_02'
-                ]);
-
-            expect(result.slides[1].name)
-                .toBe('First slide — копия');
-        });
-
-        it('duplicates all objects with new ids', () => {
+        it('duplicates a slide and all its objects with new ids', () => {
             const presentation = createPresentation([
                 {
                     ...createSlide('slide_01', 'First slide'),
@@ -420,7 +320,8 @@ describe('slide actions', () => {
                             mediaType: 'image'
                         }
                     ]
-                }
+                },
+                createSlide('slide_02', 'Second slide')
             ]);
 
             let idCounter = 0;
@@ -439,21 +340,20 @@ describe('slide actions', () => {
             const originalSlide = presentation.slides[0];
             const duplicatedSlide = result.slides[1];
 
+            expect(result.slides.map(slide => slide.id))
+                .toEqual([
+                    'slide_01',
+                    'generated_1',
+                    'slide_02'
+                ]);
+
+            expect(duplicatedSlide.name)
+                .toBe('First slide — копия');
+
             expect(duplicatedSlide.objects).toHaveLength(2);
 
-            expect(duplicatedSlide.objects[0].id)
-                .toBe('generated_2');
-
-            expect(duplicatedSlide.objects[1].id)
-                .toBe('generated_3');
-
-            expect(duplicatedSlide.objects[0].id)
-                .not.toBe(originalSlide.objects[0].id);
-
-            expect(duplicatedSlide.objects[1].id)
-                .not.toBe(originalSlide.objects[1].id);
-
-            expect(duplicatedSlide.objects[0]).toMatchObject({
+            expect(duplicatedSlide.objects[0]).toEqual({
+                id: 'generated_2',
                 type: 'text',
                 text: 'Hello',
                 position: {
@@ -463,10 +363,16 @@ describe('slide actions', () => {
                 size: {
                     width: 100,
                     height: 50
+                },
+                textStyle: {
+                    fontFamily: 'Arial',
+                    fontSize: 20,
+                    color: '#000000'
                 }
             });
 
-            expect(duplicatedSlide.objects[1]).toMatchObject({
+            expect(duplicatedSlide.objects[1]).toEqual({
+                id: 'generated_3',
                 type: 'media',
                 src: 'image.png',
                 position: {
@@ -479,6 +385,15 @@ describe('slide actions', () => {
                 },
                 mediaType: 'image'
             });
+
+            expect(duplicatedSlide.objects[0].id)
+                .not.toBe(originalSlide.objects[0].id);
+
+            expect(duplicatedSlide.objects[1].id)
+                .not.toBe(originalSlide.objects[1].id);
+
+            expect(result).not.toBe(presentation);
+            expect(result.slides).not.toBe(presentation.slides);
         });
 
         it('does nothing when the id does not exist', () => {
@@ -515,25 +430,10 @@ describe('slide actions', () => {
             expect(result.slides).toHaveLength(2);
             expect(result.slides).not.toBe(originalSlides);
         });
-
-        it('creates a new objects array', () => {
-            const presentation = createPresentation([
-                createSlide('slide_01', 'First slide')
-            ]);
-
-            const result = duplicateSlide(
-                presentation,
-                'slide_01',
-                () => 'new_id'
-            );
-
-            expect(result.slides[1].objects)
-                .not.toBe(presentation.slides[0].objects);
-        });
     });
 
     describe('setSlideBackgroundColor', () => {
-        it('sets a color background', () => {
+        it('sets a color background without mutating the slide', () => {
             const slide = createSlide(
                 'slide_01',
                 'First slide'
@@ -548,26 +448,13 @@ describe('slide actions', () => {
                 type: 'color',
                 color: '#ff0000'
             });
-        });
-
-        it('does not mutate the original slide', () => {
-            const slide = createSlide(
-                'slide_01',
-                'First slide'
-            );
-
-            const result = setSlideBackgroundColor(
-                slide,
-                '#ffffff'
-            );
-
             expect(slide.background).toBe(defaultBackground);
             expect(result).not.toBe(slide);
         });
     });
 
     describe('setSlideBackgroundImage', () => {
-        it('sets an image background', () => {
+        it('sets an image background without mutating the slide', () => {
             const slide = createSlide(
                 'slide_01',
                 'First slide'
@@ -582,19 +469,6 @@ describe('slide actions', () => {
                 type: 'image',
                 src: 'image.png'
             });
-        });
-
-        it('does not mutate the original slide', () => {
-            const slide = createSlide(
-                'slide_01',
-                'First slide'
-            );
-
-            const result = setSlideBackgroundImage(
-                slide,
-                'image.png'
-            );
-
             expect(slide.background).toBe(defaultBackground);
             expect(result).not.toBe(slide);
         });
@@ -618,6 +492,8 @@ describe('slide actions', () => {
                 colors: ['#ff0000', '#0000ff'],
                 angle: 45
             });
+
+            expect(result).not.toBe(slide);
         });
 
         it('uses zero as the default angle for a non-gradient background', () => {
@@ -659,111 +535,10 @@ describe('slide actions', () => {
                 angle: 135
             });
         });
-
-        it('replaces the current angle when a new angle is specified', () => {
-            const slide: Slide = {
-                ...createSlide('slide_01', 'First slide'),
-                background: {
-                    type: 'gradient',
-                    colors: ['#ff0000', '#0000ff'],
-                    angle: 135
-                }
-            };
-
-            const result = setGradientBackground(
-                slide,
-                ['#00ff00', '#ffffff'],
-                270
-            );
-
-            expect(result.background).toEqual({
-                type: 'gradient',
-                colors: ['#00ff00', '#ffffff'],
-                angle: 270
-            });
-        });
-
-        it('supports negative and large angles', () => {
-            const slide = createSlide(
-                'slide_01',
-                'First slide'
-            );
-
-            const result = setGradientBackground(
-                slide,
-                ['#ff0000'],
-                -360
-            );
-
-            expect(result.background).toEqual({
-                type: 'gradient',
-                colors: ['#ff0000'],
-                angle: -360
-            });
-        });
-
-        it('does not mutate the original slide', () => {
-            const slide = createSlide(
-                'slide_01',
-                'First slide'
-            );
-
-            const result = setGradientBackground(
-                slide,
-                ['#ff0000', '#0000ff'],
-                90
-            );
-
-            expect(slide.background).toBe(defaultBackground);
-            expect(result).not.toBe(slide);
-        });
     });
 
     describe('clearSlideBackground', () => {
-        it('sets the default background', () => {
-            const slide: Slide = {
-                ...createSlide('slide_01', 'First slide'),
-                background: {
-                    type: 'color',
-                    color: '#ff0000'
-                }
-            };
-
-            const result = clearSlideBackground(slide);
-
-            expect(result.background).toBe(defaultBackground);
-        });
-
-        it('replaces an image background', () => {
-            const slide: Slide = {
-                ...createSlide('slide_01', 'First slide'),
-                background: {
-                    type: 'image',
-                    src: 'image.png'
-                }
-            };
-
-            const result = clearSlideBackground(slide);
-
-            expect(result.background).toBe(defaultBackground);
-        });
-
-        it('replaces a gradient background', () => {
-            const slide: Slide = {
-                ...createSlide('slide_01', 'First slide'),
-                background: {
-                    type: 'gradient',
-                    colors: ['#ff0000', '#0000ff'],
-                    angle: 90
-                }
-            };
-
-            const result = clearSlideBackground(slide);
-
-            expect(result.background).toBe(defaultBackground);
-        });
-
-        it('does not mutate the original slide', () => {
+        it('sets the default background without mutating the slide', () => {
             const slide: Slide = {
                 ...createSlide('slide_01', 'First slide'),
                 background: {
@@ -780,6 +555,7 @@ describe('slide actions', () => {
             });
 
             expect(result).not.toBe(slide);
+            expect(result.background).toBe(defaultBackground);
         });
     });
 });

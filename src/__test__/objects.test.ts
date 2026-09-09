@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import type { Slide } from '../types/slide';
 import type {
+    SlideObject,
     TextObject,
     MediaObject
 } from '../types/objects';
@@ -14,7 +15,7 @@ import {
 } from '../functions/objects';
 
 function createSlide(
-    objects: Slide['objects'] = []
+    objects: SlideObject[] = []
 ): Slide
 {
     return {
@@ -78,17 +79,29 @@ describe('object actions', () => {
         it('adds a text object', () => {
             const slide = createSlide();
 
+            const position = {
+                x: 10,
+                y: 20
+            }
+
+            const size = {
+                width: 100,
+                height: 50
+            }
+
+            const textStyle = {
+                fontFamily: 'Arial',
+                fontSize: 20,
+                color: '#000000'
+            }
+
             const result = addTextObject(
                 slide,
                 'text_01',
-                10,
-                20,
-                100,
-                50,
+                position,
+                size,
                 'Hello',
-                'Arial',
-                20,
-                '#000000'
+                textStyle
             );
 
             expect(result.objects).toHaveLength(1);
@@ -117,17 +130,29 @@ describe('object actions', () => {
                 createMediaObject()
             ]);
 
+            const position = {
+                x: 0,
+                y: 0
+            }
+
+            const size = {
+                width: 0,
+                height: 0
+            }
+
+            const textStyle = {
+                fontFamily: '',
+                fontSize: 0,
+                color: ''
+            }
+
             const result = addTextObject(
                 slide,
                 'text_01',
-                0,
-                0,
-                0,
-                0,
+                position,
+                size,
                 '',
-                '',
-                0,
-                ''
+                textStyle
             );
 
             expect(result.objects).toHaveLength(2);
@@ -138,17 +163,29 @@ describe('object actions', () => {
         it('does not mutate the original slide', () => {
             const slide = createSlide();
 
+            const position = {
+                x: 10,
+                y: 20
+            }
+
+            const size = {
+                width: 100,
+                height: 50
+            }
+
+            const textStyle = {
+                fontFamily: 'Arial',
+                fontSize: 20,
+                color: '#000000'
+            }
+
             const result = addTextObject(
                 slide,
                 'text_01',
-                10,
-                20,
-                100,
-                50,
+                position,
+                size,
                 'Hello',
-                'Arial',
-                20,
-                '#000000'
+                textStyle
             );
 
             expect(slide.objects).toEqual([]);
@@ -161,13 +198,21 @@ describe('object actions', () => {
         it('adds a media object', () => {
             const slide = createSlide();
 
+            const position = {
+                x: 10,
+                y: 20
+            }
+
+            const size = {
+                width: 300,
+                height: 200
+            }
+
             const result = addMediaObject(
                 slide,
                 'media_01',
-                10,
-                20,
-                300,
-                200,
+                position,
+                size,
                 'image.png',
                 'image'
             );
@@ -194,13 +239,21 @@ describe('object actions', () => {
                 createTextObject()
             ]);
 
+            const position = {
+                x: 0,
+                y: 0
+            }
+
+            const size = {
+                width: 0,
+                height: 0
+            }
+
             const result = addMediaObject(
                 slide,
                 'media_01',
-                0,
-                0,
-                0,
-                0,
+                position,
+                size,
                 '',
                 'image'
             );
@@ -213,13 +266,21 @@ describe('object actions', () => {
         it('does not mutate the original slide', () => {
             const slide = createSlide();
 
+            const position = {
+                x: 10,
+                y: 20
+            }
+
+            const size = {
+                width: 300,
+                height: 200
+            }
+
             const result = addMediaObject(
                 slide,
                 'media_01',
-                10,
-                20,
-                100,
-                50,
+                position,
+                size,
                 'image.png',
                 'image'
             );
@@ -294,11 +355,15 @@ describe('object actions', () => {
                 createTextObject()
             ]);
 
+            const newPosition = {
+                x: 100,
+                y: 200
+            }
+
             const result = moveObject(
                 slide,
                 'text_01',
-                100,
-                200
+                newPosition
             );
 
             expect(result.objects[0].position).toEqual({
@@ -312,11 +377,15 @@ describe('object actions', () => {
                 createTextObject()
             ]);
 
+            const newPosition = {
+                x: 100,
+                y: 200
+            }
+
             const result = moveObject(
                 slide,
                 'unknown_object',
-                100,
-                200
+                newPosition
             );
 
             expect(result).toBe(slide);
@@ -327,11 +396,15 @@ describe('object actions', () => {
                 createTextObject()
             ]);
 
+            const newPosition = {
+                x: 100,
+                y: 200
+            }
+
             const result = moveObject(
                 slide,
                 'text_01',
-                100,
-                200
+                newPosition
             );
 
             expect(result.objects[0].size).toEqual({
@@ -347,11 +420,15 @@ describe('object actions', () => {
 
             const originalObject = slide.objects[0];
 
+            const newPosition = {
+                x: 100,
+                y: 200
+            }
+
             const result = moveObject(
                 slide,
                 'text_01',
-                100,
-                200
+                newPosition
             );
 
             expect(slide.objects[0]).toBe(originalObject);
@@ -372,11 +449,15 @@ describe('object actions', () => {
                 createTextObject()
             ]);
 
+            const newSize = {
+                width: 300,
+                height: 150
+            }
+
             const result = resizeObject(
                 slide,
                 'text_01',
-                300,
-                150
+                newSize
             );
 
             expect(result.objects[0].size).toEqual({
@@ -390,11 +471,15 @@ describe('object actions', () => {
                 createTextObject()
             ]);
 
+            const newSize = {
+                width: -1,
+                height: 100
+            }
+
             const result = resizeObject(
                 slide,
                 'text_01',
-                -1,
-                100
+                newSize
             );
 
             expect(result).toBe(slide);
@@ -405,11 +490,15 @@ describe('object actions', () => {
                 createTextObject()
             ]);
 
+            const newSize = {
+                width: 100,
+                height: 200
+            }
+
             const result = resizeObject(
                 slide,
                 'unknown_object',
-                100,
-                200
+                newSize
             );
 
             expect(result).toBe(slide);
@@ -422,11 +511,15 @@ describe('object actions', () => {
 
             const originalObject = slide.objects[0];
 
+            const newSize = {
+                width: 100,
+                height: 200
+            }
+
             const result = resizeObject(
                 slide,
                 'text_01',
-                300,
-                150
+                newSize
             );
 
             expect(slide.objects[0]).toBe(originalObject);
@@ -447,12 +540,16 @@ describe('object actions', () => {
                 createTextObject()
             ]);
 
+            const newTextStyle = {
+                fontFamily: 'Times New Roman',
+                fontSize: 32,
+                color: '#ff0000'
+            }
+
             const result = updateTextObjectStyle(
                 slide,
                 'text_01',
-                'Times New Roman',
-                32,
-                '#ff0000'
+                newTextStyle
             );
 
             expect(result.objects[0]).toMatchObject({
@@ -471,12 +568,16 @@ describe('object actions', () => {
                 createTextObject('text_02')
             ]);
 
+            const newTextStyle = {
+                fontFamily: 'Verdana',
+                fontSize: 40,
+                color: '#00ff00'
+            }
+
             const result = updateTextObjectStyle(
                 slide,
                 'text_01',
-                'Verdana',
-                40,
-                '#00ff00'
+                newTextStyle
             );
 
             expect(result.objects[0]).toMatchObject({
@@ -501,12 +602,16 @@ describe('object actions', () => {
                 createTextObject()
             ]);
 
+            const newTextStyle = {
+                fontFamily: 'Verdana',
+                fontSize: 40,
+                color: '#00ff00'
+            }
+
             const result = updateTextObjectStyle(
                 slide,
                 'unknown_object',
-                'Verdana',
-                40,
-                '#00ff00'
+                newTextStyle
             );
 
             expect(result).toBe(slide);
@@ -519,12 +624,16 @@ describe('object actions', () => {
 
             const originalObject = slide.objects[0];
 
+            const newTextStyle = {
+                fontFamily: 'Verdana',
+                fontSize: 40,
+                color: '#00ff00'
+            }
+
             const result = updateTextObjectStyle(
                 slide,
                 'text_01',
-                'Verdana',
-                40,
-                '#00ff00'
+                newTextStyle
             );
 
             expect(slide.objects[0]).toBe(originalObject);
