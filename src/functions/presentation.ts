@@ -115,7 +115,9 @@ function isBackground(
             Array.isArray(background.colors) &&
             background.colors.every(
                 (color) => typeof color === 'string'
-            ) &&
+            ) && 
+            // NOTE: some проверяет, есть ли хотя бы один подходящий элемент
+            // а every - соответствуют ли условию все элементы.
             typeof background.angle === 'number'
         );
     }
@@ -182,21 +184,23 @@ function loadPresentation(
     json: string
 ): Presentation
 {
+    let value: unknown;
+
     try
     {
-        const value: unknown = JSON.parse(json);
-
-        if (!isPresentation(value))
-        {
-            throw new Error('Неверная структура презентации');
-        }
-
-        return value;
+        value = JSON.parse(json);
     }
     catch
     {
         throw new Error('Не удалось загрузить презентацию');
     }
+
+    if (!isPresentation(value))
+    {
+        throw new Error('Неверная структура презентации');
+    }
+
+    return value;
 }
 
 export {

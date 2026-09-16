@@ -17,6 +17,9 @@ function addTextObject(
     textStyle: TextStyle
 ): Slide
 {
+    // NOTE: создание объектов оставлено внутри addTextObject и addMediaObject.
+    // Вынесение в createDefaultObject незначительно уменьшит количество параметров,
+    // но потребует расширения типа или добавления лишнего параметра.
     const newObject: TextObject = {
         id: objectId,
         position,
@@ -81,8 +84,7 @@ function moveObject(
     newPosition: Point
 ): Slide 
 {
-    let objectFound = false;
-
+    // DONE: убрал objectFound
     const objects = slide.objects.map(object =>
     {
         if (object.id !== objectId)
@@ -90,18 +92,11 @@ function moveObject(
             return object;
         }
 
-        objectFound = true;
-
         return {
             ...object,
             position: newPosition
         };
     });
-
-    if (!objectFound)
-    {
-        return slide;
-    }
 
     return {
         ...slide,
@@ -115,12 +110,11 @@ function resizeObject(
     newSize: Size
 ): Slide 
 {
+    // DONE: убрал objectFound
     if (newSize.height < 0 || newSize.width < 0)
     {
         return slide;
     }
-
-    let objectFound = false;
 
     const objects = slide.objects.map(object =>
     {
@@ -129,18 +123,11 @@ function resizeObject(
             return object;
         }
 
-        objectFound = true;
-
         return {
             ...object,
             size: newSize
         };
     });
-
-    if (!objectFound)
-    {
-        return slide;
-    }
 
     return {
         ...slide,
@@ -154,8 +141,7 @@ function updateTextObjectStyle(
     newTextStyle: TextStyle
 ): Slide
 {
-    let objectFound = false;
-
+    // DONE: убрал objectFound
     const objects = slide.objects.map(object =>
     {
         if (object.id !== objectId)
@@ -163,18 +149,11 @@ function updateTextObjectStyle(
             return object;
         }
 
-        objectFound = true;
-
         return {
             ...object,
             textStyle: newTextStyle
         };
     });
-
-    if (!objectFound)
-    {
-        return slide;
-    }
 
     return {
         ...slide,
