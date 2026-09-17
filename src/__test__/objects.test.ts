@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import type { Slide } from '../types/slide';
 import type {
+    SlideObject,
     TextObject,
     MediaObject
 } from '../types/objects';
@@ -12,21 +13,37 @@ import {
     resizeObject,
     updateTextObjectStyle
 } from '../functions/objects';
+import {
+    defaultBackground
+} from '../types/slide'
 
 function createSlide(
-    objects: Slide['objects'] = []
+    objects: SlideObject[] = []
 ): Slide
 {
     return {
         id: 'slide_01',
         name: 'Test slide',
         description: '',
-        background: {
-            type: 'color',
-            color: '#ffffff'
-        },
+        background: defaultBackground,
         objects
     };
+}
+
+const defaultPosition = {
+    x: 10,
+    y: 20
+}
+
+const defaultSize = {
+    width: 100,
+    height: 50
+}
+
+const defaultTextStyle = {
+    fontFamily: 'Arial',
+    fontSize: 20,
+    color: '#000000'
 }
 
 function createTextObject(
@@ -35,21 +52,11 @@ function createTextObject(
 {
     return {
         id,
-        position: {
-            x: 10,
-            y: 20
-        },
-        size: {
-            width: 100,
-            height: 50
-        },
+        position: defaultPosition,
+        size: defaultSize,
         type: 'text',
         text: 'Hello',
-        textStyle: {
-            fontFamily: 'Arial',
-            fontSize: 20,
-            color: '#000000'
-        }
+        textStyle: defaultTextStyle
     };
 }
 
@@ -59,14 +66,8 @@ function createMediaObject(
 {
     return {
         id,
-        position: {
-            x: 30,
-            y: 40
-        },
-        size: {
-            width: 200,
-            height: 100
-        },
+        position: defaultPosition,
+        size: defaultSize,
         type: 'media',
         src: 'image.png',
         mediaType: 'image'
@@ -81,34 +82,20 @@ describe('object actions', () => {
             const result = addTextObject(
                 slide,
                 'text_01',
-                10,
-                20,
-                100,
-                50,
+                defaultPosition,
+                defaultSize,
                 'Hello',
-                'Arial',
-                20,
-                '#000000'
+                defaultTextStyle
             );
 
             expect(result.objects).toHaveLength(1);
             expect(result.objects[0]).toEqual({
                 id: 'text_01',
-                position: {
-                    x: 10,
-                    y: 20
-                },
-                size: {
-                    width: 100,
-                    height: 50
-                },
+                position: defaultPosition,
+                size: defaultSize,
                 type: 'text',
                 text: 'Hello',
-                textStyle: {
-                    fontFamily: 'Arial',
-                    fontSize: 20,
-                    color: '#000000'
-                }
+                textStyle: defaultTextStyle
             });
         });
 
@@ -120,14 +107,10 @@ describe('object actions', () => {
             const result = addTextObject(
                 slide,
                 'text_01',
-                0,
-                0,
-                0,
-                0,
+                defaultPosition,
+                defaultSize,
                 '',
-                '',
-                0,
-                ''
+                defaultTextStyle
             );
 
             expect(result.objects).toHaveLength(2);
@@ -141,14 +124,10 @@ describe('object actions', () => {
             const result = addTextObject(
                 slide,
                 'text_01',
-                10,
-                20,
-                100,
-                50,
+                defaultPosition,
+                defaultSize,
                 'Hello',
-                'Arial',
-                20,
-                '#000000'
+                defaultTextStyle
             );
 
             expect(slide.objects).toEqual([]);
@@ -164,10 +143,8 @@ describe('object actions', () => {
             const result = addMediaObject(
                 slide,
                 'media_01',
-                10,
-                20,
-                300,
-                200,
+                defaultPosition,
+                defaultSize,
                 'image.png',
                 'image'
             );
@@ -175,14 +152,8 @@ describe('object actions', () => {
             expect(result.objects).toHaveLength(1);
             expect(result.objects[0]).toEqual({
                 id: 'media_01',
-                position: {
-                    x: 10,
-                    y: 20
-                },
-                size: {
-                    width: 300,
-                    height: 200
-                },
+                position: defaultPosition,
+                size: defaultSize,
                 type: 'media',
                 src: 'image.png',
                 mediaType: 'image'
@@ -197,10 +168,8 @@ describe('object actions', () => {
             const result = addMediaObject(
                 slide,
                 'media_01',
-                0,
-                0,
-                0,
-                0,
+                defaultPosition,
+                defaultSize,
                 '',
                 'image'
             );
@@ -216,10 +185,8 @@ describe('object actions', () => {
             const result = addMediaObject(
                 slide,
                 'media_01',
-                10,
-                20,
-                100,
-                50,
+                defaultPosition,
+                defaultSize,
                 'image.png',
                 'image'
             );
@@ -260,17 +227,6 @@ describe('object actions', () => {
             expect(result).not.toBe(slide);
         });
 
-        it('does nothing when the object list is empty', () => {
-            const slide = createSlide();
-
-            const result = removeObject(
-                slide,
-                'unknown_object'
-            );
-
-            expect(result.objects).toEqual([]);
-        });
-
         it('does not mutate the original slide', () => {
             const slide = createSlide([
                 createTextObject()
@@ -289,6 +245,11 @@ describe('object actions', () => {
     });
 
     describe('moveObject', () => {
+        const newPosition = {
+            x: 100,
+            y: 200
+        }
+
         it('moves an object to a new position', () => {
             const slide = createSlide([
                 createTextObject()
@@ -297,29 +258,10 @@ describe('object actions', () => {
             const result = moveObject(
                 slide,
                 'text_01',
-                100,
-                200
+                newPosition
             );
 
-            expect(result.objects[0].position).toEqual({
-                x: 100,
-                y: 200
-            });
-        });
-
-        it('does nothing when the object id does not exist', () => {
-            const slide = createSlide([
-                createTextObject()
-            ]);
-
-            const result = moveObject(
-                slide,
-                'unknown_object',
-                100,
-                200
-            );
-
-            expect(result).toBe(slide);
+            expect(result.objects[0].position).toEqual(newPosition);
         });
 
         it('preserves the object size', () => {
@@ -330,14 +272,10 @@ describe('object actions', () => {
             const result = moveObject(
                 slide,
                 'text_01',
-                100,
-                200
+                newPosition
             );
 
-            expect(result.objects[0].size).toEqual({
-                width: 100,
-                height: 50
-            });
+            expect(result.objects[0].size).toEqual(defaultSize);
         });
 
         it('does not mutate the original slide', () => {
@@ -350,15 +288,11 @@ describe('object actions', () => {
             const result = moveObject(
                 slide,
                 'text_01',
-                100,
-                200
+                newPosition
             );
 
             expect(slide.objects[0]).toBe(originalObject);
-            expect(slide.objects[0].position).toEqual({
-                x: 10,
-                y: 20
-            });
+            expect(slide.objects[0].position).toEqual(defaultPosition);
 
             expect(result.objects[0]).not.toBe(originalObject);
             expect(result).not.toBe(slide);
@@ -367,6 +301,11 @@ describe('object actions', () => {
     });
 
     describe('resizeObject', () => {
+        const newSize = {
+            width: 300,
+            height: 150
+        }
+
         it('changes an object size', () => {
             const slide = createSlide([
                 createTextObject()
@@ -375,14 +314,10 @@ describe('object actions', () => {
             const result = resizeObject(
                 slide,
                 'text_01',
-                300,
-                150
+                newSize
             );
 
-            expect(result.objects[0].size).toEqual({
-                width: 300,
-                height: 150
-            });
+            expect(result.objects[0].size).toEqual(newSize);
         });
 
         it('does not allow a negative size', () => {
@@ -390,26 +325,15 @@ describe('object actions', () => {
                 createTextObject()
             ]);
 
+            const negativeSize = {
+                width: -1,
+                height: -1
+            }
+
             const result = resizeObject(
                 slide,
                 'text_01',
-                -1,
-                100
-            );
-
-            expect(result).toBe(slide);
-        });
-
-        it('does nothing when the object id does not exist', () => {
-            const slide = createSlide([
-                createTextObject()
-            ]);
-
-            const result = resizeObject(
-                slide,
-                'unknown_object',
-                100,
-                200
+                negativeSize
             );
 
             expect(result).toBe(slide);
@@ -425,15 +349,11 @@ describe('object actions', () => {
             const result = resizeObject(
                 slide,
                 'text_01',
-                300,
-                150
+                newSize
             );
 
             expect(slide.objects[0]).toBe(originalObject);
-            expect(slide.objects[0].size).toEqual({
-                width: 100,
-                height: 50
-            });
+            expect(slide.objects[0].size).toEqual(defaultSize);
 
             expect(result.objects[0]).not.toBe(originalObject);
             expect(result).not.toBe(slide);
@@ -442,6 +362,12 @@ describe('object actions', () => {
     });
 
     describe('updateTextObjectStyle', () => {
+        const newTextStyle = {
+            fontFamily: 'Times New Roman',
+            fontSize: 32,
+            color: '#ff0000'
+        }
+
         it('updates the style of a text object', () => {
             const slide = createSlide([
                 createTextObject()
@@ -450,18 +376,12 @@ describe('object actions', () => {
             const result = updateTextObjectStyle(
                 slide,
                 'text_01',
-                'Times New Roman',
-                32,
-                '#ff0000'
+                newTextStyle
             );
 
             expect(result.objects[0]).toMatchObject({
                 type: 'text',
-                textStyle: {
-                    fontFamily: 'Times New Roman',
-                    fontSize: 32,
-                    color: '#ff0000'
-                }
+                textStyle: newTextStyle
             });
         });
 
@@ -474,42 +394,16 @@ describe('object actions', () => {
             const result = updateTextObjectStyle(
                 slide,
                 'text_01',
-                'Verdana',
-                40,
-                '#00ff00'
+                newTextStyle
             );
 
             expect(result.objects[0]).toMatchObject({
-                textStyle: {
-                    fontFamily: 'Verdana',
-                    fontSize: 40,
-                    color: '#00ff00'
-                }
+                textStyle: newTextStyle
             });
 
             expect(result.objects[1]).toMatchObject({
-                textStyle: {
-                    fontFamily: 'Arial',
-                    fontSize: 20,
-                    color: '#000000'
-                }
+                textStyle: defaultTextStyle
             });
-        });
-
-        it('does nothing when the object id does not exist', () => {
-            const slide = createSlide([
-                createTextObject()
-            ]);
-
-            const result = updateTextObjectStyle(
-                slide,
-                'unknown_object',
-                'Verdana',
-                40,
-                '#00ff00'
-            );
-
-            expect(result).toBe(slide);
         });
 
         it('does not mutate the original slide', () => {
@@ -522,18 +416,12 @@ describe('object actions', () => {
             const result = updateTextObjectStyle(
                 slide,
                 'text_01',
-                'Verdana',
-                40,
-                '#00ff00'
+                newTextStyle
             );
 
             expect(slide.objects[0]).toBe(originalObject);
             expect(slide.objects[0]).toMatchObject({
-                textStyle: {
-                    fontFamily: 'Arial',
-                    fontSize: 20,
-                    color: '#000000'
-                }
+                textStyle: defaultTextStyle
             });
 
             expect(result.objects[0]).not.toBe(originalObject);

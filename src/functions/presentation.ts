@@ -182,21 +182,23 @@ function loadPresentation(
     json: string
 ): Presentation
 {
+    let value: unknown;
+
     try
     {
-        const value: unknown = JSON.parse(json);
-
-        if (!isPresentation(value))
-        {
-            throw new Error('Неверная структура презентации');
-        }
-
-        return value;
+        value = JSON.parse(json);
     }
     catch
     {
         throw new Error('Не удалось загрузить презентацию');
     }
+
+    if (!isPresentation(value))
+    {
+        throw new Error('Неверная структура презентации');
+    }
+
+    return value;
 }
 
 export {

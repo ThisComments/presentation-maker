@@ -91,6 +91,6 @@ describe('presentation actions', () => {
         });
 
         expect(() => loadPresentation(invalidJson))
-            .toThrow('Не удалось загрузить презентацию');
+            .toThrow('Неверная структура презентации');
     });
 });

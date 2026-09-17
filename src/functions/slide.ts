@@ -7,13 +7,13 @@ function createDefaultSlide(
     slideId: string
 ): Slide 
 {
-  return {
-    id: slideId,
-    name: slideName,
-    description: '',
-    background: defaultBackground,
-    objects: [],
-  };
+    return {
+        id: slideId,
+        name: slideName,
+        description: '',
+        background: defaultBackground,
+        objects: [],
+    };
 }
 
 function addSlide(
@@ -22,11 +22,13 @@ function addSlide(
     slideName?: string
 ): Presentation 
 {
-  const newSlide = createDefaultSlide(slideName || `Слайд ${presentation.slides.length + 1}`, slideId);
-  return {
-    ...presentation,
-    slides: [...presentation.slides, newSlide],
-  };
+    const newSlide = createDefaultSlide(slideName || 
+        `Слайд ${presentation.slides.length + 1}`, slideId);
+        
+    return {
+        ...presentation,
+        slides: [...presentation.slides, newSlide],
+    };
 }
 
 function removeSlides(
@@ -48,25 +50,29 @@ function moveSlide(
     newIndex: number
 ): Presentation
 {
-    const slides = [...presentation.slides];
-
-    const oldIndex = slides.findIndex(
+    const slide = presentation.slides.find(
         slide => slide.id === slideId
     );
 
-    if (oldIndex === -1)
+    if (!slide)
     {
         return presentation;
     }
 
     const targetIndex = Math.max(
         0,
-        Math.min(Math.trunc(newIndex), slides.length)
+        Math.min(Math.trunc(newIndex) - 1, presentation.slides.length
+    ));
+
+    const slidesWithoutMoved = presentation.slides.filter(
+        currentSlide => currentSlide.id !== slideId
     );
 
-    const [slide] = slides.splice(oldIndex, 1);
-
-    slides.splice(targetIndex, 0, slide);
+    const slides = [
+        ...slidesWithoutMoved.slice(0, targetIndex),
+        slide,
+        ...slidesWithoutMoved.slice(targetIndex)
+    ];
 
     return {
         ...presentation,
@@ -80,32 +86,23 @@ function duplicateSlide(
     generateId: () => string
 ): Presentation
 {
-    const slide = presentation.slides.find(
-        slide => slide.id === slideId
-    );
+    const slides = presentation.slides
+        .map(slide =>
+        {
+            if (slide.id !== slideId)
+            {
+                return slide;
+            }
 
-    if (!slide)
-    {
-        return presentation;
-    }
+            const duplicatedSlide: Slide = {
+                ...structuredClone(slide),
+                id: generateId(),
+                name: `${slide.name} — копия`
+            };
 
-    const duplicatedSlide: Slide = {
-        ...slide,
-        id: generateId(),
-        name: `${slide.name} — копия`,
-        objects: slide.objects.map(object => ({
-            ...object,
-            id: generateId()
-        }))
-    };
-
-    const slideIndex = presentation.slides.findIndex(
-        slide => slide.id === slideId
-    );
-
-    const slides = [...presentation.slides];
-
-    slides.splice(slideIndex + 1, 0, duplicatedSlide);
+            return [slide, duplicatedSlide];
+        })
+        .flat();
 
     return {
         ...presentation,
