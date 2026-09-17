@@ -1,6 +1,3 @@
-// NOTE: Файл сокращён до ~430 строк. Дальнейшее сокращение потребует
-// удаления или объединения тестов и снизит полноту покрытия функций.
-
 import { describe, it, expect } from 'vitest';
 import type { Slide } from '../types/slide';
 import type { Presentation } from '../types/presentation';
@@ -202,7 +199,7 @@ describe('slide actions', () => {
     });
 
     describe('duplicateSlide', () => {
-        // TODO: Сократить тест
+        // TODO: Переделать тест
         it('duplicates a slide and all its objects with new ids', () => {
             const presentation = createPresentation([
                 {

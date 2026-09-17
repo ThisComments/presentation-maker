@@ -5,8 +5,23 @@ import type {
     MediaType, 
     Point, 
     Size, 
-    TextStyle  
+    TextStyle,
+    SlideObject
 } from "../types/objects"
+
+function addObjectToSlide(
+    slide: Slide,
+    newObject: SlideObject
+): Slide
+{
+    return {
+        ...slide,
+        objects: [
+            ...slide.objects,
+            newObject
+        ]
+    };
+}
 
 function addTextObject(
     slide: Slide,
@@ -17,9 +32,6 @@ function addTextObject(
     textStyle: TextStyle
 ): Slide
 {
-    // NOTE: создание объектов оставлено внутри addTextObject и addMediaObject.
-    // Вынесение в createDefaultObject незначительно уменьшит количество параметров,
-    // но потребует расширения типа или добавления лишнего параметра.
     const newObject: TextObject = {
         id: objectId,
         position,
@@ -29,13 +41,7 @@ function addTextObject(
         textStyle
     };
 
-    return {
-        ...slide,
-        objects: [
-            ...slide.objects,
-            newObject
-        ]
-    };
+    return addObjectToSlide(slide, newObject);
 }
 
 function addMediaObject(
@@ -56,13 +62,7 @@ function addMediaObject(
         mediaType
     };
 
-    return {
-        ...slide,
-        objects: [
-            ...slide.objects,
-            newObject
-        ]
-    };
+    return addObjectToSlide(slide, newObject);
 }
 
 function removeObject(
@@ -78,30 +78,36 @@ function removeObject(
     };
 }
 
+function modifyObject(
+    slide: Slide,
+    objectId: string,
+    modify: (object: SlideObject) => SlideObject
+): Slide
+{
+    return {
+        ...slide,
+        objects: slide.objects.map(
+            object => object.id === objectId
+                ? modify(object)
+                : object
+        )
+    };
+}
+
 function moveObject(
     slide: Slide,
     objectId: string,
     newPosition: Point
-): Slide 
+): Slide
 {
-    // DONE: убрал objectFound
-    const objects = slide.objects.map(object =>
-    {
-        if (object.id !== objectId)
-        {
-            return object;
-        }
-
-        return {
+    return modifyObject(
+        slide,
+        objectId,
+        object => ({
             ...object,
             position: newPosition
-        };
-    });
-
-    return {
-        ...slide,
-        objects
-    };
+        })
+    );
 }
 
 function resizeObject(
@@ -110,29 +116,19 @@ function resizeObject(
     newSize: Size
 ): Slide 
 {
-    // DONE: убрал objectFound
     if (newSize.height < 0 || newSize.width < 0)
     {
         return slide;
     }
 
-    const objects = slide.objects.map(object =>
-    {
-        if (object.id !== objectId)
-        {
-            return object;
-        }
-
-        return {
+    return modifyObject(
+        slide,
+        objectId,
+        object => ({
             ...object,
             size: newSize
-        };
-    });
-
-    return {
-        ...slide,
-        objects
-    };
+        })
+    );
 }
 
 function updateTextObjectStyle(
@@ -141,24 +137,14 @@ function updateTextObjectStyle(
     newTextStyle: TextStyle
 ): Slide
 {
-    // DONE: убрал objectFound
-    const objects = slide.objects.map(object =>
-    {
-        if (object.id !== objectId)
-        {
-            return object;
-        }
-
-        return {
+    return modifyObject(
+        slide,
+        objectId,
+        object => ({
             ...object,
             textStyle: newTextStyle
-        };
-    });
-
-    return {
-        ...slide,
-        objects
-    };
+        })
+    );
 }
 
 export {

@@ -22,7 +22,9 @@ function addSlide(
     slideName?: string
 ): Presentation 
 {
-    const newSlide = createDefaultSlide(slideName || `Слайд ${presentation.slides.length + 1}`, slideId);
+    const newSlide = createDefaultSlide(slideName || 
+        `Слайд ${presentation.slides.length + 1}`, slideId);
+        
     return {
         ...presentation,
         slides: [...presentation.slides, newSlide],
@@ -48,7 +50,6 @@ function moveSlide(
     newIndex: number
 ): Presentation
 {
-    // DONE: переделать проще
     const slide = presentation.slides.find(
         slide => slide.id === slideId
     );
@@ -85,7 +86,6 @@ function duplicateSlide(
     generateId: () => string
 ): Presentation
 {
-    // DONE: переделал на map
     const slides = presentation.slides
         .map(slide =>
         {
@@ -95,13 +95,9 @@ function duplicateSlide(
             }
 
             const duplicatedSlide: Slide = {
-                ...slide,
+                ...structuredClone(slide),
                 id: generateId(),
-                name: `${slide.name} — копия`,
-                objects: slide.objects.map(object => ({
-                    ...object,
-                    id: generateId()
-                }))
+                name: `${slide.name} — копия`
             };
 
             return [slide, duplicatedSlide];

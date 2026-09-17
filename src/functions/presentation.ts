@@ -115,9 +115,7 @@ function isBackground(
             Array.isArray(background.colors) &&
             background.colors.every(
                 (color) => typeof color === 'string'
-            ) && 
-            // NOTE: some проверяет, есть ли хотя бы один подходящий элемент
-            // а every - соответствуют ли условию все элементы.
+            ) &&
             typeof background.angle === 'number'
         );
     }
