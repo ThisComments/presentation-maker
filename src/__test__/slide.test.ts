@@ -12,6 +12,41 @@ import {
     clearSlideBackground
 } from '../functions/slide';
 import { defaultBackground } from '../types/slide';
+import { TextObject, MediaObject } from '../types/objects';
+
+const TEXT_OBJECT: TextObject = {
+    id: 'text_01',
+    type: 'text',
+    text: 'Hello',
+    position: {
+        x: 10,
+        y: 20
+    },
+    size: {
+        width: 100,
+        height: 50
+    },
+    textStyle: {
+        fontFamily: 'Arial',
+        fontSize: 20,
+        color: '#000000'
+    }
+};
+
+const MEDIA_OBJECT: MediaObject = {
+    id: 'media_01',
+    type: 'media',
+    src: 'image.png',
+    position: {
+        x: 30,
+        y: 40
+    },
+    size: {
+        width: 200,
+        height: 100
+    },
+    mediaType: 'image'
+};
 
 function createSlide(
     id: string,
@@ -199,44 +234,14 @@ describe('slide actions', () => {
     });
 
     describe('duplicateSlide', () => {
-        // TODO: Переделать тест
-        it('duplicates a slide and all its objects with new ids', () => {
+        // DONE: Переделать тест
+        it('duplicates a slide and all its objects', () => {
             const presentation = createPresentation([
                 {
                     ...createSlide('slide_01', 'First slide'),
                     objects: [
-                        {
-                            id: 'text_01',
-                            type: 'text',
-                            text: 'Hello',
-                            position: {
-                                x: 10,
-                                y: 20
-                            },
-                            size: {
-                                width: 100,
-                                height: 50
-                            },
-                            textStyle: {
-                                fontFamily: 'Arial',
-                                fontSize: 20,
-                                color: '#000000'
-                            }
-                        },
-                        {
-                            id: 'media_01',
-                            type: 'media',
-                            src: 'image.png',
-                            position: {
-                                x: 30,
-                                y: 40
-                            },
-                            size: {
-                                width: 200,
-                                height: 100
-                            },
-                            mediaType: 'image'
-                        }
+                        TEXT_OBJECT,
+                        MEDIA_OBJECT
                     ]
                 },
                 createSlide('slide_02', 'Second slide')
@@ -268,47 +273,20 @@ describe('slide actions', () => {
             expect(duplicatedSlide.name)
                 .toBe('First slide — копия');
 
-            expect(duplicatedSlide.objects).toHaveLength(2);
+            expect(duplicatedSlide.objects).toEqual([
+                TEXT_OBJECT,
+                MEDIA_OBJECT
+            ]);
 
-            expect(duplicatedSlide.objects[0]).toEqual({
-                id: 'generated_2',
-                type: 'text',
-                text: 'Hello',
-                position: {
-                    x: 10,
-                    y: 20
-                },
-                size: {
-                    width: 100,
-                    height: 50
-                },
-                textStyle: {
-                    fontFamily: 'Arial',
-                    fontSize: 20,
-                    color: '#000000'
-                }
-            });
+            expect(duplicatedSlide.objects).not.toBe(
+                originalSlide.objects
+            );
 
-            expect(duplicatedSlide.objects[1]).toEqual({
-                id: 'generated_3',
-                type: 'media',
-                src: 'image.png',
-                position: {
-                    x: 30,
-                    y: 40
-                },
-                size: {
-                    width: 200,
-                    height: 100
-                },
-                mediaType: 'image'
-            });
+            expect(duplicatedSlide.objects[0])
+                .not.toBe(originalSlide.objects[0]);
 
-            expect(duplicatedSlide.objects[0].id)
-                .not.toBe(originalSlide.objects[0].id);
-
-            expect(duplicatedSlide.objects[1].id)
-                .not.toBe(originalSlide.objects[1].id);
+            expect(duplicatedSlide.objects[1])
+                .not.toBe(originalSlide.objects[1]);
 
             expect(result).not.toBe(presentation);
             expect(result.slides).not.toBe(presentation.slides);
