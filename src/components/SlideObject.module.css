@@ -1,0 +1,11 @@
+.object
+{
+    position: absolute;
+    box-sizing: border-box;
+}
+
+img.object
+{
+    display: block;
+    object-fit: contain;
+}

@@ -20,28 +20,30 @@ function createTestPresentation(): Presentation {
     let objectId = generateId();
     slide1 = addTextObject(
         slide1, 
-        objectId, 
-        {x: 50, y: 50}, 
-        {width: 400, height: 60},
-        'Добро пожаловать!', 
         {
-            fontFamily: 'Arial', 
-            fontSize: 32, 
-            color: '#333333'
-    });
+            objectId: objectId, 
+            position: {x: 50, y: 50}, 
+            size: {width: 400, height: 60},
+            text: 'Добро пожаловать!', 
+            textStyle: {
+                fontFamily: 'Arial', 
+                fontSize: 32, 
+                color: '#333333'
+    }});
 
     objectId = generateId();
     slide1 = addTextObject(
         slide1, 
-        objectId, 
-        {x: 50, y: 120}, 
-        {width: 400, height: 40}, 
-        'Лабораторная работа #2', 
         {
-            fontFamily: 'Arial', 
-            fontSize: 20, 
-            color: '#666666'
-    });
+            objectId: objectId, 
+            position: {x: 50, y: 120}, 
+            size: {width: 400, height: 40}, 
+            text: 'Лабораторная работа #2', 
+            textStyle: {
+                fontFamily: 'Arial', 
+                fontSize: 20, 
+                color: '#666666'
+    }});
 
     objectId = generateId();
     presentation = addSlide(presentation, objectId, 'Список');
@@ -51,54 +53,58 @@ function createTestPresentation(): Presentation {
     objectId = generateId();
     slide2 = addTextObject(
         slide2, 
-        objectId, 
-        {x: 50, y: 50}, 
-        {width: 300, height: 40}, 
-        'Список задач:', 
         {
-            fontFamily: 'Arial',
-            fontSize: 24, 
-            color: '#000000'
-    });
+            objectId: objectId, 
+            position: {x: 50, y: 50}, 
+            size: {width: 300, height: 40}, 
+            text: 'Список задач:', 
+            textStyle: {
+                fontFamily: 'Arial',
+                fontSize: 24, 
+                color: '#000000'
+    }});
 
     objectId = generateId();
     slide2 = addTextObject(
         slide2, 
-        objectId,
-        {x: 50, y: 100}, 
-        {width: 300, height: 30}, 
-        '1. Разработать интерфейс', 
         {
-            fontFamily: 'Arial',
-            fontSize: 18, 
-            color: '#000000'
-    });
+            objectId: objectId,
+            position: {x: 50, y: 100}, 
+            size: {width: 300, height: 30}, 
+            text: '1. Разработать интерфейс', 
+            textStyle: {
+                fontFamily: 'Arial',
+                fontSize: 18, 
+                color: '#000000'
+    }});
 
     objectId = generateId();
     slide2 = addTextObject(
         slide2, 
-        objectId, 
-        {x: 50, y: 140}, 
-        {width: 300, height: 30}, 
-        '2. Добавить интерактивность',
         {
-            fontFamily: 'Arial',
-            fontSize: 18, 
-            color: '#000000'
-    });
+            objectId: objectId, 
+            position: {x: 50, y: 140}, 
+            size: {width: 300, height: 30}, 
+            text: '2. Добавить интерактивность',
+            textStyle: {
+                fontFamily: 'Arial',
+                fontSize: 18, 
+                color: '#000000'
+    }});
 
     objectId = generateId();
     slide2 = addTextObject(
         slide2, 
-        objectId,
-        {x: 50, y: 180}, 
-        {width: 300, height: 30}, 
-        '3. Выделить общие компоненты',
         {
-            fontFamily: 'Arial',
-            fontSize: 18, 
-            color: '#000000'
-    });
+            objectId: objectId,
+            position: {x: 50, y: 180}, 
+            size: {width: 300, height: 30}, 
+            text: '3. Выделить общие компоненты',
+            textStyle: {
+                fontFamily: 'Arial',
+                fontSize: 18, 
+                color: '#000000'
+    }});
 
     objectId = generateId();
     presentation = addSlide(presentation, objectId, 'Список');
@@ -108,28 +114,30 @@ function createTestPresentation(): Presentation {
     objectId = generateId();
     slide3 = addTextObject(
         slide3,
-        objectId,
-        {x: 50, y: 50}, 
-        {width: 300, height: 40},
-        'Итоги работы:',
         {
-            fontFamily: 'Arial',
-            fontSize: 24, 
-            color: '#2e7d32'
-    });
+            objectId: objectId,
+            position: {x: 50, y: 50}, 
+            size: {width: 300, height: 40},
+            text: 'Итоги работы:',
+            textStyle: {
+                fontFamily: 'Arial',
+                fontSize: 24, 
+                color: '#2e7d32'
+    }});
 
     objectId = generateId();
     slide3 = addTextObject(
         slide3, 
-        objectId,
-        {x: 50, y: 120}, 
-        {width: 200, height: 60},
-        'Готово!',
         {
-            fontFamily: 'Arial',
-            fontSize: 36, 
-            color: '#4caf50'
-    });
+            objectId: objectId,
+            position: {x: 50, y: 120}, 
+            size: {width: 200, height: 60},
+            text: 'Готово!',
+            textStyle: {
+                fontFamily: 'Arial',
+                fontSize: 36, 
+                color: '#4caf50'
+    }});
 
     return presentation;
 }

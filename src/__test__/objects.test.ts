@@ -81,12 +81,13 @@ describe('object actions', () => {
 
             const result = addTextObject(
                 slide,
-                'text_01',
-                defaultPosition,
-                defaultSize,
-                'Hello',
-                defaultTextStyle
-            );
+                {
+                    objectId: 'text_01',
+                    position: defaultPosition,
+                    size: defaultSize,
+                    text: 'Hello',
+                    textStyle: defaultTextStyle
+            });
 
             expect(result.objects).toHaveLength(1);
             expect(result.objects[0]).toEqual({
@@ -106,12 +107,13 @@ describe('object actions', () => {
 
             const result = addTextObject(
                 slide,
-                'text_01',
-                defaultPosition,
-                defaultSize,
-                '',
-                defaultTextStyle
-            );
+                {
+                    objectId: 'text_01',
+                    position: defaultPosition,
+                    size: defaultSize,
+                    text: '',
+                    textStyle: defaultTextStyle
+            });
 
             expect(result.objects).toHaveLength(2);
             expect(result.objects[0].id).toBe('media_01');
@@ -123,12 +125,13 @@ describe('object actions', () => {
 
             const result = addTextObject(
                 slide,
-                'text_01',
-                defaultPosition,
-                defaultSize,
-                'Hello',
-                defaultTextStyle
-            );
+                {
+                    objectId: 'text_01',
+                    position: defaultPosition,
+                    size: defaultSize,
+                    text: 'Hello',
+                    textStyle: defaultTextStyle
+            });
 
             expect(slide.objects).toEqual([]);
             expect(result).not.toBe(slide);
@@ -142,12 +145,13 @@ describe('object actions', () => {
 
             const result = addMediaObject(
                 slide,
-                'media_01',
-                defaultPosition,
-                defaultSize,
-                'image.png',
-                'image'
-            );
+                {
+                    objectId: 'media_01',
+                    position: defaultPosition,
+                    size: defaultSize,
+                    src: 'image.png',
+                    mediaType: 'image'
+            });
 
             expect(result.objects).toHaveLength(1);
             expect(result.objects[0]).toEqual({
@@ -167,12 +171,13 @@ describe('object actions', () => {
 
             const result = addMediaObject(
                 slide,
-                'media_01',
-                defaultPosition,
-                defaultSize,
-                '',
-                'image'
-            );
+                {
+                    objectId: 'media_01',
+                    position: defaultPosition,
+                    size: defaultSize,
+                    src: '',
+                    mediaType: 'image'
+            });
 
             expect(result.objects).toHaveLength(2);
             expect(result.objects[0].id).toBe('text_01');
@@ -184,12 +189,13 @@ describe('object actions', () => {
 
             const result = addMediaObject(
                 slide,
-                'media_01',
-                defaultPosition,
-                defaultSize,
-                'image.png',
-                'image'
-            );
+                {
+                    objectId: 'media_01',
+                    position: defaultPosition,
+                    size: defaultSize,
+                    src: 'image.png',
+                    mediaType: 'image'
+            });
 
             expect(slide.objects).toEqual([]);
             expect(result).not.toBe(slide);

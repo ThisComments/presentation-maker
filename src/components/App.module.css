@@ -1,0 +1,18 @@
+.app
+{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: #f8f9fa;
+    color: #202124;
+    font-family: Arial, sans-serif;
+}
+
+.mainArea
+{
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}

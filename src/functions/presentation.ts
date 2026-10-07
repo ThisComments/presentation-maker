@@ -201,9 +201,31 @@ function loadPresentation(
     return value;
 }
 
+function modifySlide(
+    presentation: Presentation,
+    {
+        slideId,
+        modifier
+    }: {
+        slideId: string;
+        modifier: (slide: Slide) => Slide;
+    }
+): Presentation
+{
+    return {
+        ...presentation,
+        slides: presentation.slides.map(slide =>
+            slide.id === slideId
+                ? modifier(slide)
+                : slide
+        )
+    };
+}
+
 export {
     createPresentation,
     updatePresentationName,
     savePresentation,
-    loadPresentation
+    loadPresentation,
+    modifySlide
 };
