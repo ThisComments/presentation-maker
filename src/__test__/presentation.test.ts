@@ -30,7 +30,7 @@ describe('presentation actions', () => {
                     description: '',
                     background: {
                         type: 'color',
-                        color: 'white'
+                        color: '#ffffff'
                     },
                     objects: [] 
                 } 

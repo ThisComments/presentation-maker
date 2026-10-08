@@ -122,12 +122,6 @@ npx vitest run src/__test__/objects.test.ts
 npm run build
 ```
 
-Предварительно проверить production-сборку:
-
-```bash
-npm run preview
-```
-
 ## Основные сущности
 
 ### Presentation
