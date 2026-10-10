@@ -69,6 +69,7 @@ function PreviewOverlay({
                 <Button
                     text="Назад"
                     onClick={handlePrevious}
+                    disabled={slideIndex === 0}
                 />
 
                 <span>
@@ -78,6 +79,7 @@ function PreviewOverlay({
                 <Button
                     text="Далее"
                     onClick={handleNext}
+                    disabled={slideIndex === presentation.slides.length - 1}
                 />
 
                 <Button

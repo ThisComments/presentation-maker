@@ -26,9 +26,7 @@ function Toolbar({
     {
         dispatch(
             updatePresentationName,
-            {
-                name
-            }
+            name
         );
     }
 
@@ -36,15 +34,13 @@ function Toolbar({
     {
         dispatch(
             addSlide,
-            {
-                slideId: crypto.randomUUID()
-            }
+            crypto.randomUUID()
         );
     }
 
     function handleSave(): void
     {
-        savePresentation(presentation);
+        localStorage.setItem('savePresentation', savePresentation(presentation));
     }
 
     function handlePreview(): void

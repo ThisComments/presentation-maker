@@ -1,7 +1,8 @@
 import type { Presentation } from '../types/presentation';
 import {
     getActiveSlideId,
-    setActiveSlide
+    setActiveSlide,
+    deleteSlides
 } from '../editor';
 import { SlidePreview } from './SlidePreview';
 import styles from './SlideList.module.css';
@@ -34,7 +35,7 @@ function SlideList({
 
         if (shouldRemove)
         {
-            // Здесь позже будет dispatch(removeSlides, ...)
+            deleteSlides([slideId]);
         }
     }
 

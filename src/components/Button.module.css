@@ -9,12 +9,12 @@
     cursor: pointer;
 }
 
-.button:hover
+.button:hover:not(:disabled)
 {
     background: #f1f3f4;
 }
 
-.button:active
+.button:active:not(:disabled)
 {
     background: #e8eaed;
 }
@@ -23,4 +23,10 @@
 {
     outline: 2px solid #1a73e8;
     outline-offset: 1px;
+}
+
+.button:disabled
+{
+    opacity: 0.5;
+    cursor: default;
 }

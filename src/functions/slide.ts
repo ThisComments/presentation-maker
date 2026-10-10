@@ -44,6 +44,22 @@ function removeSlides(
     };
 }
 
+function replaceSlide(
+    presentation: Presentation,
+    slideIndex: number,
+    newSlide: Slide
+): Presentation
+{
+    return {
+        ...presentation,
+        slides: presentation.slides.map((slide, index) =>
+            index === slideIndex
+                ? newSlide
+                : slide
+        )
+    };
+}
+
 function moveSlide(
     presentation: Presentation,
     slideId: string,
@@ -179,6 +195,7 @@ export {
     addSlide,
     removeSlides,
     moveSlide,
+    replaceSlide,
     duplicateSlide,
     setSlideBackgroundColor,
     setSlideBackgroundImage,

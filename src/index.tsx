@@ -23,10 +23,8 @@ function renderApp(): void
     );
 }
 
-// Первичная рендерка
 renderApp();
 
-// Подписываемся на изменения модели -- при каждом изменении перерисовываем приложение
 addEditorChangeHandler(() => {
     renderApp();
 });

@@ -1,6 +1,6 @@
 import type { Presentation } from './types/presentation.js';
 import { createPresentation } from './functions/presentation.js';
-import { addSlide, setSlideBackgroundColor } from './functions/slide.js';
+import { addSlide, setSlideBackgroundColor, replaceSlide } from './functions/slide.js';
 import { addTextObject } from './functions/objects.js';
 
 const createIdGenerator = () => {
@@ -17,11 +17,10 @@ function createTestPresentation(): Presentation {
     let slide1 = presentation.slides[0];
     slide1 = setSlideBackgroundColor(slide1, '#f0f0f0');
 
-    let objectId = generateId();
     slide1 = addTextObject(
         slide1, 
         {
-            objectId: objectId, 
+            objectId: generateId(), 
             position: {x: 50, y: 50}, 
             size: {width: 400, height: 60},
             text: 'Добро пожаловать!', 
@@ -31,11 +30,10 @@ function createTestPresentation(): Presentation {
                 color: '#333333'
     }});
 
-    objectId = generateId();
     slide1 = addTextObject(
         slide1, 
         {
-            objectId: objectId, 
+            objectId: generateId(), 
             position: {x: 50, y: 120}, 
             size: {width: 400, height: 40}, 
             text: 'Лабораторная работа #2', 
@@ -45,16 +43,16 @@ function createTestPresentation(): Presentation {
                 color: '#666666'
     }});
 
-    objectId = generateId();
-    presentation = addSlide(presentation, objectId, 'Список');
+    presentation = replaceSlide(presentation, 0, slide1);
+
+    presentation = addSlide(presentation, generateId(), 'Список');
     let slide2 = presentation.slides[1];
     slide2 = setSlideBackgroundColor(slide2, '#ffffff');
 
-    objectId = generateId();
     slide2 = addTextObject(
         slide2, 
         {
-            objectId: objectId, 
+            objectId: generateId(), 
             position: {x: 50, y: 50}, 
             size: {width: 300, height: 40}, 
             text: 'Список задач:', 
@@ -64,11 +62,10 @@ function createTestPresentation(): Presentation {
                 color: '#000000'
     }});
 
-    objectId = generateId();
     slide2 = addTextObject(
         slide2, 
         {
-            objectId: objectId,
+            objectId: generateId(),
             position: {x: 50, y: 100}, 
             size: {width: 300, height: 30}, 
             text: '1. Разработать интерфейс', 
@@ -78,11 +75,10 @@ function createTestPresentation(): Presentation {
                 color: '#000000'
     }});
 
-    objectId = generateId();
     slide2 = addTextObject(
         slide2, 
         {
-            objectId: objectId, 
+            objectId: generateId(), 
             position: {x: 50, y: 140}, 
             size: {width: 300, height: 30}, 
             text: '2. Добавить интерактивность',
@@ -92,11 +88,10 @@ function createTestPresentation(): Presentation {
                 color: '#000000'
     }});
 
-    objectId = generateId();
     slide2 = addTextObject(
         slide2, 
         {
-            objectId: objectId,
+            objectId: generateId(),
             position: {x: 50, y: 180}, 
             size: {width: 300, height: 30}, 
             text: '3. Выделить общие компоненты',
@@ -106,16 +101,16 @@ function createTestPresentation(): Presentation {
                 color: '#000000'
     }});
 
-    objectId = generateId();
-    presentation = addSlide(presentation, objectId, 'Список');
+    presentation = replaceSlide(presentation, 1, slide2);
+
+    presentation = addSlide(presentation, generateId(), 'Список');
     let slide3 = presentation.slides[2];
     slide3 = setSlideBackgroundColor(slide3, '#e8f5e9');
 
-    objectId = generateId();
     slide3 = addTextObject(
         slide3,
         {
-            objectId: objectId,
+            objectId: generateId(),
             position: {x: 50, y: 50}, 
             size: {width: 300, height: 40},
             text: 'Итоги работы:',
@@ -125,11 +120,10 @@ function createTestPresentation(): Presentation {
                 color: '#2e7d32'
     }});
 
-    objectId = generateId();
     slide3 = addTextObject(
         slide3, 
         {
-            objectId: objectId,
+            objectId: generateId(),
             position: {x: 50, y: 120}, 
             size: {width: 200, height: 60},
             text: 'Готово!',
@@ -138,6 +132,8 @@ function createTestPresentation(): Presentation {
                 fontSize: 36, 
                 color: '#4caf50'
     }});
+
+    presentation = replaceSlide(presentation, 2, slide3);
 
     return presentation;
 }

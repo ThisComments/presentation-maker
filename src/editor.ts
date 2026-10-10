@@ -1,5 +1,5 @@
 import type { Presentation } from './types/presentation.js';
-import type { Point, Size, TextStyle, MediaType } from './types/objects.js';
+import type { Point, Size, TextStyle } from './types/objects.js';
 
 import {
     addSlide,
@@ -117,10 +117,25 @@ function getActiveSlideId(): string | null
 }
 
 function setPreviewMode(
-    value: boolean
+    mode: boolean
 ): void
 {
-    previewMode = value;
+    previewMode = mode;
+
+    if (mode)
+    {
+        document.addEventListener(
+            'keydown',
+            handlePreviewKeyDown
+        );
+    }
+    else
+    {
+        document.removeEventListener(
+            'keydown',
+            handlePreviewKeyDown
+        );
+    }
 
     if (editorChangeHandler)
     {
@@ -131,6 +146,16 @@ function setPreviewMode(
 function getPreviewMode(): boolean
 {
     return previewMode;
+}
+
+function handlePreviewKeyDown(
+    event: KeyboardEvent
+): void
+{
+    if (event.key === 'Escape')
+    {
+        setPreviewMode(false);
+    }
 }
 
 function setPreviewSlideIndex(
