@@ -1,4 +1,4 @@
-import type { SlideObject as SlideObjectType } from '../types/objects';
+import type { SlideObject as SlideObjectType } from '../../../types/objects';
 import styles from './SlideObject.module.css';
 
 type SlideObjectProps = {
@@ -10,10 +10,10 @@ function SlideObject({
 }: SlideObjectProps)
 {
     const objectStyle = {
-        left: object.position.x,
-        top: object.position.y,
-        width: object.size.width,
-        height: object.size.height
+        left: `${object.position.x}px`,
+        top: `${object.position.y}px`,
+        width: `${object.size.width}px`,
+        height: `${object.size.height}px`
     };
 
     if (object.type === 'text')
@@ -38,7 +38,7 @@ function SlideObject({
             className={styles.object}
             style={objectStyle}
             src={object.src}
-            alt=""
+            alt="Изображение на слайде"
         />
     );
 }

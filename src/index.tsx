@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { App } from './components/App.js';
+import { App } from './components/app/App.js';
 import { addEditorChangeHandler, getState } from './editor.js';
 import { createTestPresentation } from "./data.js";
 import { setInitialState } from './editor.js';

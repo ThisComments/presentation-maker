@@ -25,8 +25,7 @@ function TextInput({
     return (
         <input
             className={`${styles.input} ${className ?? ''}`}
-            value={value}
-            defaultValue={defaultValue}
+            {...(value !== undefined ? { value } : { defaultValue })}
             placeholder={placeholder}
             type={type}
             name={name}

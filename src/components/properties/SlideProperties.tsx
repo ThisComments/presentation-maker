@@ -1,18 +1,15 @@
-import type { FormEvent } from 'react';
-import type { Slide } from '../types/slide';
-import type { Point, Size, TextStyle } from '../types/objects';
+import type { Slide } from '../../types/slide';
+import { 
+    changeBackgroundColor, 
+    changeBackgroundImage, 
+    changeGradient, 
+    clearBackground, 
+    addText, 
+    addImage 
+} from './modifier';
 
-import {
-    changeSlideBackgroundColor,
-    changeSlideBackgroundImage,
-    changeSlideGradient,
-    resetSlideBackground,
-    addTextToSlide,
-    addImageToSlide
-} from '../editor.js';
-
-import { Button } from './Button';
-import { TextInput } from './TextInput';
+import { Button } from '../common/button/Button';
+import { TextInput } from '../common/textInupt/TextInput';
 
 import styles from './SlideProperties.module.css';
 
@@ -24,146 +21,49 @@ function SlideProperties({
     slide
 }: SlidePropertiesProps)
 {
-    function handleBackgroundColorChange(
-        color: string
-    ): void
-    {
-        changeSlideBackgroundColor(
-            slide.id,
-            color
-        );
-    }
+    function handleBackgroundColorChange(color: string): void { changeBackgroundColor(slide.id, color); }
 
-    function handleBackgroundImageSubmit(
-        event: FormEvent<HTMLFormElement>
-    ): void
+    function handleBackgroundImageSubmit(event: React.SubmitEvent<HTMLFormElement>): void
     {
         event.preventDefault();
 
-        const formData = new FormData(event.currentTarget);
-        const imageUrl = formData.get('imageUrl');
+        const imageUrl = new FormData(event.currentTarget).get('imageUrl') as string;
+        if (!imageUrl.trim()) return;
 
-        if (
-            typeof imageUrl !== 'string' ||
-            imageUrl.trim() === ''
-        )
-        {
-            return;
-        }
-
-        changeSlideBackgroundImage(
-            slide.id,
-            imageUrl.trim()
-        );
+        changeBackgroundImage(slide.id, imageUrl.trim());
     }
 
-    function handleGradientSubmit(
-        event: FormEvent<HTMLFormElement>
-    ): void
+    function handleGradientSubmit(event: React.SubmitEvent<HTMLFormElement>): void
     {
         event.preventDefault();
 
-        const formData = new FormData(event.currentTarget);
+        const form = new FormData(event.currentTarget);
+        const firstColor = form.get('firstColor') as string;
+        const secondColor = form.get('secondColor') as string;
+        const angle = Number(form.get('angle'));
 
-        const firstColor = formData.get('firstColor');
-        const secondColor = formData.get('secondColor');
-        const angleValue = formData.get('angle');
+        if (!Number.isFinite(angle)) return;
 
-        if (
-            typeof firstColor !== 'string' ||
-            typeof secondColor !== 'string' ||
-            typeof angleValue !== 'string'
-        )
-        {
-            return;
-        }
-
-        const angle = Number(angleValue);
-
-        if (!Number.isFinite(angle))
-        {
-            return;
-        }
-
-        changeSlideGradient(
-            slide.id,
-            [
-                firstColor,
-                secondColor
-            ],
-            angle
-        );
+        changeGradient(slide.id, [firstColor, secondColor], angle);
     }
 
-    function handleClearBackground(): void
-    {
-        resetSlideBackground(slide.id);
-    }
+    function handleClearBackground(): void { clearBackground(slide.id); }
+    function handleAddText(): void { addText(slide.id); }
 
-    function handleAddText(): void
-    {
-        const position: Point = {
-            x: 50,
-            y: 50
-        };
-
-        const size: Size = {
-            width: 300,
-            height: 60
-        };
-
-        const textStyle: TextStyle = {
-            fontFamily: 'Arial',
-            fontSize: 24,
-            color: '#000000'
-        };
-
-        addTextToSlide(
-            slide.id,
-            crypto.randomUUID(),
-            position,
-            size,
-            'Новый текст',
-            textStyle
-        );
-    }
-
-    function handleAddImageSubmit(
-        event: FormEvent<HTMLFormElement>
-    ): void
+    function handleAddImageSubmit(event: React.SubmitEvent<HTMLFormElement>): void
     {
         event.preventDefault();
 
-        const formData = new FormData(event.currentTarget);
-        const imageUrl = formData.get('imageUrl');
+        const form = event.currentTarget;
+        const imageUrl = form.imageUrl.value.trim();
 
-        if (
-            typeof imageUrl !== 'string' ||
-            imageUrl.trim() === ''
-        )
+        if (!imageUrl)
         {
             return;
         }
 
-        const position: Point = {
-            x: 50,
-            y: 50
-        };
-
-        const size: Size = {
-            width: 300,
-            height: 200
-        };
-
-        addImageToSlide(
-            slide.id,
-            crypto.randomUUID(),
-            position,
-            size,
-            imageUrl.trim()
-        );
-
-        event.currentTarget.reset();
+        addImage(slide.id, imageUrl);
+        form.reset();
     }
 
     const gradientColors =

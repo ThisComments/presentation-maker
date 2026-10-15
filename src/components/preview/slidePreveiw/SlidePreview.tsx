@@ -1,5 +1,5 @@
-import type { Slide } from '../types/slide';
-import { SlideObject } from './SlideObject';
+import type { Slide } from '../../../types/slide';
+import { SlideObject } from '../slideObject/SlideObject';
 import styles from './SlidePreview.module.css';
 
 type SlidePreviewProps = {

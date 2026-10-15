@@ -1,15 +1,15 @@
-import type { Presentation } from '../types/presentation';
+import type { Presentation } from '../../types/presentation';
 import {
     dispatch,
     setPreviewMode
-} from '../editor';
+} from '../../editor';
 import {
     updatePresentationName,
     savePresentation
-} from '../functions/presentation';
-import { addSlide } from '../functions/slide';
-import { Button } from './Button';
-import { TextInput } from './TextInput';
+} from '../../functions/presentation';
+import { addSlide } from '../../functions/slide';
+import { Button } from '../common/button/Button';
+import { TextInput } from '../common/textInupt/TextInput';
 import styles from './Toolbar.module.css';
 
 type ToolbarProps = {

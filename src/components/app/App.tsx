@@ -1,12 +1,12 @@
-import type { Presentation } from '../types/presentation';
+import type { Presentation } from '../../types/presentation';
 import {
     getPreviewMode,
     setPreviewMode
-} from '../editor';
-import { Toolbar } from './Toolbar';
-import { SlideList } from './SlideList';
-import { Workspace } from './Workspace';
-import { PreviewOverlay } from './PreviewOverlay';
+} from '../../editor';
+import { Toolbar } from '../toolbar/Toolbar';
+import { SlideList } from '../slideList/SlideList';
+import { Workspace } from '../workspace/Workspace';
+import { PreviewOverlay } from '../preview/previewOverlay/PreviewOverlay';
 import styles from './App.module.css';
 
 type AppProps = {
