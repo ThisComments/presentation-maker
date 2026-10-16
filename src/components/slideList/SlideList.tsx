@@ -6,7 +6,7 @@ import {
     setActiveSlide,
     deleteSlides
 } from '../../editor.js';
-import { SlidePreview } from '../preview/slidePreveiw/SlidePreview.js';
+import { SlidePreview } from '../preview/slidePreview/SlidePreview.js';
 import styles from './SlideList.module.css';
 import { ConfirmDeleteDialog } from './ConfirmDeleteDialog.js';
 
@@ -66,9 +66,7 @@ class SlideList extends Component<SlideListProps, SlideListState>
                     {presentation.slides.map(slide => (
                         <div
                             key={slide.id}
-                            className={
-                                slide.id === activeSlideId ? styles.active : styles.item
-                            }
+                            className={slide.id === activeSlideId ? styles.active : styles.item}
                             onClick={() => this.handleSlideClick(slide.id)}
                             onContextMenu={event =>
                                 this.handleContextMenu(event, slide.id)

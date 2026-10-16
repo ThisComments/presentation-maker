@@ -10,7 +10,7 @@ import {
 } from '../../functions/presentation';
 import { addSlide } from '../../functions/slide';
 import { Button } from '../common/button/Button';
-import { TextInput } from '../common/textInupt/TextInput';
+import { TextInput } from '../common/textInput/TextInput';
 import styles from './Toolbar.module.css';
 
 type ToolbarProps = {

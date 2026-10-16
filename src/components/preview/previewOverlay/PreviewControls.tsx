@@ -11,17 +11,26 @@ type PreviewControlsProps = {
 
 function PreviewControls({ slideIndex, slideCount, onPrevious, onNext, onClose }: PreviewControlsProps)
 {
-    const buttons = [
-        { text: 'Назад', onClick: onPrevious, disabled: slideIndex === 0 },
-        { text: 'Далее', onClick: onNext, disabled: slideIndex === slideCount - 1 },
-        { text: 'Закрыть', onClick: onClose, disabled: false }
-    ];
-
     return (
         <div className={styles.controls}>
-            {buttons.slice(0, 1).map(button => <Button key={button.text} {...button} />)}
+            <Button
+                text="Назад"
+                onClick={onPrevious}
+                disabled={slideIndex === 0}
+            />
+
             <span>{slideIndex + 1} / {slideCount}</span>
-            {buttons.slice(1).map(button => <Button key={button.text} {...button} />)}
+
+            <Button
+                text="Далее"
+                onClick={onNext}
+                disabled={slideIndex === slideCount - 1}
+            />
+
+            <Button
+                text="Закрыть"
+                onClick={onClose}
+            />
         </div>
     );
 }

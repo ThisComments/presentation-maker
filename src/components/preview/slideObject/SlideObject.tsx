@@ -5,9 +5,7 @@ type SlideObjectProps = {
     object: SlideObjectType;
 };
 
-function SlideObject({
-    object
-}: SlideObjectProps)
+function SlideObject({object}: SlideObjectProps)
 {
     const objectStyle = {
         left: `${object.position.x}px`,

@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client';
 import { App } from './components/app/App.js';
 import { addEditorChangeHandler, getState } from './editor.js';
 import { createTestPresentation } from "./data.js";
-import { setInitialState } from './editor.js';
+import { setInitialState, addKeyboardListener } from './editor.js';
 
 const initialData = createTestPresentation();
 setInitialState(initialData);
@@ -24,6 +24,7 @@ function renderApp(): void
 }
 
 renderApp();
+addKeyboardListener();
 
 addEditorChangeHandler(() => {
     renderApp();

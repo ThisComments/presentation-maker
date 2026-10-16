@@ -108,21 +108,6 @@ function setPreviewMode(mode: boolean): void
 {
     previewMode = mode;
 
-    if (mode)
-    {
-        document.addEventListener(
-            'keydown',
-            handlePreviewKeyDown
-        );
-    }
-    else
-    {
-        document.removeEventListener(
-            'keydown',
-            handlePreviewKeyDown
-        );
-    }
-
     if (editorChangeHandler)
     {
         editorChangeHandler();
@@ -132,14 +117,6 @@ function setPreviewMode(mode: boolean): void
 function getPreviewMode(): boolean
 {
     return previewMode;
-}
-
-function handlePreviewKeyDown(event: KeyboardEvent): void
-{
-    if (event.key === 'Escape')
-    {
-        setPreviewMode(false);
-    }
 }
 
 function setPreviewSlideIndex(index: number): void
@@ -155,6 +132,19 @@ function setPreviewSlideIndex(index: number): void
 function getPreviewSlideIndex(): number
 {
     return previewSlideIndex;
+}
+
+function handleKeyboardEvent(event: KeyboardEvent): void
+{
+    if (event.key === 'Escape' && previewMode)
+    {
+        setPreviewMode(false);
+    }
+}
+
+function addKeyboardListener(): void
+{
+    window.addEventListener('keydown', handleKeyboardEvent);
 }
 
 function addNewSlide(id: string, name?: string): void
@@ -282,6 +272,7 @@ export {
 
     setPreviewSlideIndex,
     getPreviewSlideIndex,
+    addKeyboardListener,
 
     addNewSlide,
     deleteSlides,

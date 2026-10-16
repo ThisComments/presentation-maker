@@ -6,9 +6,7 @@ type SlidePreviewProps = {
     slide: Slide;
 };
 
-function SlidePreview({
-    slide
-}: SlidePreviewProps)
+function SlidePreview({slide}: SlidePreviewProps)
 {
     let backgroundStyle = {};
 

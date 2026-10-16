@@ -1,16 +1,16 @@
 import type { Slide } from '../../types/slide';
 import { 
-    changeBackgroundColor, 
-    changeBackgroundImage, 
-    changeGradient, 
-    clearBackground, 
-    addText, 
-    addImage 
-} from './modifier';
+    changeSlideBackgroundColor, 
+    changeSlideBackgroundImage, 
+    changeSlideGradient, 
+    resetSlideBackground, 
+    addTextToSlide, 
+    addImageToSlide 
+} from '../../editor.js';
 
 import { Button } from '../common/button/Button';
-import { TextInput } from '../common/textInupt/TextInput';
-
+import { TextInput } from '../common/textInput/TextInput';
+import type { Point, Size, TextStyle } from '../../types/objects';
 import styles from './SlideProperties.module.css';
 
 type SlidePropertiesProps = {
@@ -23,7 +23,7 @@ function SlideProperties({
 {
     function handleBackgroundColorChange(color: string): void 
     { 
-        changeBackgroundColor(slide.id, color); 
+        changeSlideBackgroundColor(slide.id, color); 
     }
 
     function handleBackgroundImageSubmit(event: React.SubmitEvent<HTMLFormElement>): void
@@ -33,7 +33,7 @@ function SlideProperties({
         const imageUrl = new FormData(event.currentTarget).get('imageUrl') as string;
         if (!imageUrl.trim()) return;
 
-        changeBackgroundImage(slide.id, imageUrl.trim());
+        changeSlideBackgroundImage(slide.id, imageUrl.trim());
     }
 
     function handleGradientSubmit(event: React.SubmitEvent<HTMLFormElement>): void
@@ -47,33 +47,35 @@ function SlideProperties({
 
         if (!Number.isFinite(angle)) return;
 
-        changeGradient(slide.id, [firstColor, secondColor], angle);
+        changeSlideGradient(slide.id, [firstColor, secondColor], angle);
     }
 
     function handleClearBackground(): void 
     { 
-        clearBackground(slide.id); 
+        resetSlideBackground(slide.id); 
     }
 
     function handleAddText(): void 
     { 
-        addText(slide.id); 
+        const position: Point = { x: 50, y: 50 };
+        const size: Size = { width: 300, height: 60 };
+        const textStyle: TextStyle = { fontFamily: 'Arial', fontSize: 24, color: '#000000' };
+        addTextToSlide(slide.id, crypto.randomUUID(), position, size, 'Новый текст', textStyle);
     }
 
     function handleAddImageSubmit(event: React.SubmitEvent<HTMLFormElement>): void
     {
-        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const value = formData.get('imageUrl');
 
-        const form = event.currentTarget;
-        const imageUrl = form.imageUrl.value.trim();
+        if (typeof value !== 'string' || !value.trim()) return;
 
-        if (!imageUrl)
-        {
-            return;
-        }
+        const imageUrl = value.trim();
 
-        addImage(slide.id, imageUrl);
-        form.reset();
+        const position: Point = { x: 50, y: 50 };
+        const size: Size = { width: 300, height: 200 };
+        addImageToSlide(slide.id, crypto.randomUUID(), position, size, imageUrl);
+        event.currentTarget.reset();
     }
 
     const gradientColors = slide.background.type === 'gradient' ? slide.background.colors : [];

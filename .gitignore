@@ -4,3 +4,4 @@ vite.config.ts
 node_modules/
 my-app/
 dist/
+TODO.md

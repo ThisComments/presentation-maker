@@ -2,7 +2,7 @@ import type { Presentation } from '../../types/presentation';
 import {
     getActiveSlideId
 } from '../../editor';
-import { SlidePreview } from '../preview/slidePreveiw/SlidePreview';
+import { SlidePreview } from '../preview/slidePreview/SlidePreview';
 import { SlideProperties } from '../properties/SlideProperties';
 import styles from './Workspace.module.css';
 
