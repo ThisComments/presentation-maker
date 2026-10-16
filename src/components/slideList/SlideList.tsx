@@ -29,10 +29,7 @@ class SlideList extends Component<SlideListProps, SlideListState>
         setActiveSlide(slideId);
     };
 
-    handleContextMenu = (
-        event: MouseEvent<HTMLDivElement>,
-        slideId: string
-    ): void =>
+    handleContextMenu = (event: MouseEvent<HTMLDivElement>, slideId: string): void =>
     {
         event.preventDefault();
         this.setState({ slideToDelete: slideId });
@@ -61,9 +58,7 @@ class SlideList extends Component<SlideListProps, SlideListState>
         const { presentation } = this.props;
         const { slideToDelete } = this.state;
         const activeSlideId = getActiveSlideId();
-        const slide = presentation.slides.find(
-            item => item.id === slideToDelete
-        );
+        const slide = presentation.slides.find(item => item.id === slideToDelete);
 
         return (
             <>
@@ -72,9 +67,7 @@ class SlideList extends Component<SlideListProps, SlideListState>
                         <div
                             key={slide.id}
                             className={
-                                slide.id === activeSlideId
-                                    ? styles.active
-                                    : styles.item
+                                slide.id === activeSlideId ? styles.active : styles.item
                             }
                             onClick={() => this.handleSlideClick(slide.id)}
                             onContextMenu={event =>

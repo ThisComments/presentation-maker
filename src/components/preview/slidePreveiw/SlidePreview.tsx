@@ -12,27 +12,25 @@ function SlidePreview({
 {
     let backgroundStyle = {};
 
-    if (slide.background.type === 'color')
+    switch (slide.background.type)
     {
-        backgroundStyle = {
-            backgroundColor: slide.background.color
-        };
-    }
-
-    if (slide.background.type === 'image')
-    {
-        backgroundStyle = {
-            backgroundImage: `url(${slide.background.src})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-        };
-    }
-
-    if (slide.background.type === 'gradient')
-    {
-        backgroundStyle = {
-            background: `linear-gradient(${slide.background.angle}deg, ${slide.background.colors.join(', ')})`
-        };
+        case 'color':
+            backgroundStyle = {
+                backgroundColor: slide.background.color
+            };
+            break;
+        case 'gradient':
+            backgroundStyle = {
+                background: `linear-gradient(${slide.background.angle}deg, ${slide.background.colors.join(', ')})`
+            };
+            break;
+        case 'image':
+            backgroundStyle = {
+                backgroundImage: `url(${slide.background.src})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+            };
+            break;
     }
 
     return (

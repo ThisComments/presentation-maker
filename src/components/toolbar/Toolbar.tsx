@@ -5,7 +5,8 @@ import {
 } from '../../editor';
 import {
     updatePresentationName,
-    savePresentation
+    savePresentation,
+    loadPresentation
 } from '../../functions/presentation';
 import { addSlide } from '../../functions/slide';
 import { Button } from '../common/button/Button';
@@ -20,27 +21,24 @@ function Toolbar({
     presentation
 }: ToolbarProps)
 {
-    function handleNameChange(
-        name: string
-    ): void
+    function handleNameChange(name: string): void
     {
-        dispatch(
-            updatePresentationName,
-            name
-        );
+        dispatch(updatePresentationName, name);
     }
 
     function handleAddSlide(): void
     {
-        dispatch(
-            addSlide,
-            crypto.randomUUID()
-        );
+        dispatch(addSlide, crypto.randomUUID());
     }
 
     function handleSave(): void
     {
         localStorage.setItem('savePresentation', savePresentation(presentation));
+    }
+
+    function handleLoad(): void
+    {
+        dispatch(loadPresentation, localStorage.getItem('savePresentation'));
     }
 
     function handlePreview(): void
@@ -65,6 +63,11 @@ function Toolbar({
             <Button
                 text="Сохранить"
                 onClick={handleSave}
+            />
+
+            <Button
+                text="Загрузить"
+                onClick={handleLoad}
             />
 
             <Button

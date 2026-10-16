@@ -16,31 +16,32 @@ function SlideObject({
         height: `${object.size.height}px`
     };
 
-    if (object.type === 'text')
+    switch (object.type)
     {
-        return (
-            <div
-                className={styles.object}
-                style={{
-                    ...objectStyle,
-                    fontFamily: object.textStyle.fontFamily,
-                    fontSize: object.textStyle.fontSize,
-                    color: object.textStyle.color
-                }}
-            >
-                {object.text}
-            </div>
-        );
+        case 'media':
+            return (
+                <img
+                    className={styles.object}
+                    style={objectStyle}
+                    src={object.src}
+                    alt="Изображение на слайде"
+                />
+            );
+        case 'text':
+            return (
+                <div
+                    className={styles.object}
+                    style={{
+                        ...objectStyle,
+                        fontFamily: object.textStyle.fontFamily,
+                        fontSize: object.textStyle.fontSize,
+                        color: object.textStyle.color
+                    }}
+                >
+                    {object.text}
+                </div>
+            );
     }
-
-    return (
-        <img
-            className={styles.object}
-            style={objectStyle}
-            src={object.src}
-            alt="Изображение на слайде"
-        />
-    );
 }
 
 export { SlideObject };

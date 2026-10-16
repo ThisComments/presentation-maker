@@ -21,7 +21,10 @@ function SlideProperties({
     slide
 }: SlidePropertiesProps)
 {
-    function handleBackgroundColorChange(color: string): void { changeBackgroundColor(slide.id, color); }
+    function handleBackgroundColorChange(color: string): void 
+    { 
+        changeBackgroundColor(slide.id, color); 
+    }
 
     function handleBackgroundImageSubmit(event: React.SubmitEvent<HTMLFormElement>): void
     {
@@ -47,8 +50,15 @@ function SlideProperties({
         changeGradient(slide.id, [firstColor, secondColor], angle);
     }
 
-    function handleClearBackground(): void { clearBackground(slide.id); }
-    function handleAddText(): void { addText(slide.id); }
+    function handleClearBackground(): void 
+    { 
+        clearBackground(slide.id); 
+    }
+
+    function handleAddText(): void 
+    { 
+        addText(slide.id); 
+    }
 
     function handleAddImageSubmit(event: React.SubmitEvent<HTMLFormElement>): void
     {
@@ -66,26 +76,12 @@ function SlideProperties({
         form.reset();
     }
 
-    const gradientColors =
-        slide.background.type === 'gradient'
-            ? slide.background.colors
-            : [];
+    const gradientColors = slide.background.type === 'gradient' ? slide.background.colors : [];
+    const firstGradientColor = gradientColors[0] ?? '#ffffff';
+    const secondGradientColor = gradientColors[1] ?? '#000000';
+    const gradientAngle = slide.background.type === 'gradient' ? slide.background.angle : 0;
 
-    const firstGradientColor =
-        gradientColors[0] ?? '#ffffff';
-
-    const secondGradientColor =
-        gradientColors[1] ?? '#000000';
-
-    const gradientAngle =
-        slide.background.type === 'gradient'
-            ? slide.background.angle
-            : 0;
-
-    const backgroundColor =
-        slide.background.type === 'color'
-            ? slide.background.color
-            : '#ffffff';
+    const backgroundColor = slide.background.type === 'color' ? slide.background.color : '#ffffff';
 
     return (
         <aside className={styles.properties}>

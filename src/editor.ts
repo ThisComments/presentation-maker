@@ -17,7 +17,7 @@ import {
     setGradientBackground,
     clearSlideBackground
 } from './functions/slide.js';
-import { modifySlide as modifyPresentationSlide  } from './functions/presentation.js';
+import { modifySlide as modifyPresentationSlide } from './functions/presentation.js';
 import { Slide } from './types/slide.js';
 
 let currentPresentation: Presentation | null = null;
@@ -33,16 +33,12 @@ type Modifier<P = any> = (
     params: P
 ) => Presentation;
 
-function addEditorChangeHandler(
-    handler: () => void
-): void
+function addEditorChangeHandler(handler: () => void): void
 {
     editorChangeHandler = handler;
 }
 
-function setInitialState(
-    presentation: Presentation
-): void
+function setInitialState(presentation: Presentation): void
 {
     currentPresentation = presentation;
 
@@ -60,10 +56,7 @@ function getState(): Presentation | null
     return currentPresentation;
 }
 
-function dispatch(
-    modifier: Modifier,
-    params: any = null
-): void
+function dispatch(modifier: Modifier, params: any = null): void
 {
     if (!currentPresentation)
     {
@@ -85,10 +78,7 @@ function dispatch(
     }
 }
 
-function modifySlide(
-    slideId: string,
-    modifier: (slide: Slide) => Slide
-): void
+function modifySlide(slideId: string, modifier: (slide: Slide) => Slide): void
 {
     dispatch(
         modifyPresentationSlide,
@@ -99,9 +89,7 @@ function modifySlide(
     );
 }
 
-function setActiveSlide(
-    slideId: string
-): void
+function setActiveSlide(slideId: string): void
 {
     activeSlideId = slideId;
 
@@ -116,9 +104,7 @@ function getActiveSlideId(): string | null
     return activeSlideId;
 }
 
-function setPreviewMode(
-    mode: boolean
-): void
+function setPreviewMode(mode: boolean): void
 {
     previewMode = mode;
 
@@ -148,9 +134,7 @@ function getPreviewMode(): boolean
     return previewMode;
 }
 
-function handlePreviewKeyDown(
-    event: KeyboardEvent
-): void
+function handlePreviewKeyDown(event: KeyboardEvent): void
 {
     if (event.key === 'Escape')
     {
@@ -158,9 +142,7 @@ function handlePreviewKeyDown(
     }
 }
 
-function setPreviewSlideIndex(
-    index: number
-): void
+function setPreviewSlideIndex(index: number): void
 {
     previewSlideIndex = index;
 
@@ -175,10 +157,7 @@ function getPreviewSlideIndex(): number
     return previewSlideIndex;
 }
 
-function addNewSlide(
-    id: string,
-    name?: string
-): void
+function addNewSlide(id: string, name?: string): void
 {
     dispatch(addSlide, {
         id,
@@ -186,9 +165,7 @@ function addNewSlide(
     });
 }
 
-function deleteSlides(
-    slideIds: string[]
-): void
+function deleteSlides(slideIds: string[]): void
 {
     dispatch(removeSlides, slideIds);
 
@@ -248,10 +225,7 @@ function addImageToSlide(
     );
 }
 
-function changeSlideBackgroundColor(
-    slideId: string,
-    color: string
-): void
+function changeSlideBackgroundColor(slideId: string, color: string): void
 {
     modifySlide(
         slideId,
@@ -262,10 +236,7 @@ function changeSlideBackgroundColor(
     );
 }
 
-function changeSlideBackgroundImage(
-    slideId: string,
-    imageUrl: string
-): void
+function changeSlideBackgroundImage(slideId: string,imageUrl: string): void
 {
     modifySlide(
         slideId,
@@ -276,11 +247,7 @@ function changeSlideBackgroundImage(
     );
 }
 
-function changeSlideGradient(
-    slideId: string,
-    colors: string[],
-    angle?: number
-): void
+function changeSlideGradient(slideId: string, colors: string[], angle?: number): void
 {
     modifySlide(
         slideId,
@@ -292,9 +259,7 @@ function changeSlideGradient(
     );
 }
 
-function resetSlideBackground(
-    slideId: string
-): void
+function resetSlideBackground(slideId: string): void
 {
     modifySlide(
         slideId,
