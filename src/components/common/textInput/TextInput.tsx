@@ -4,7 +4,7 @@ type TextInputProps = {
     value?: string;
     defaultValue?: string;
     placeholder?: string;
-    type?: 'text' | 'color' | 'number';
+    type?: 'text' | 'number';
     name?: string;
     id?: string;
     onChange?: (value: string) => void;

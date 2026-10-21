@@ -1,13 +1,6 @@
 import type { Presentation } from '../../types/presentation';
-import {
-    dispatch,
-    setPreviewMode
-} from '../../editor';
-import {
-    updatePresentationName,
-    savePresentation,
-    loadPresentation
-} from '../../functions/presentation';
+import { dispatch, setPreviewMode } from '../../editor';
+import { updatePresentationName, savePresentation, loadPresentation } from '../../functions/presentation';
 import { addSlide } from '../../functions/slide';
 import { Button } from '../common/button/Button';
 import { TextInput } from '../common/textInput/TextInput';
@@ -17,9 +10,7 @@ type ToolbarProps = {
     presentation: Presentation;
 };
 
-function Toolbar({
-    presentation
-}: ToolbarProps)
+function Toolbar({ presentation }: ToolbarProps)
 {
     function handleNameChange(name: string): void
     {

@@ -1,7 +1,5 @@
 import type { Presentation } from '../../types/presentation';
-import {
-    getActiveSlideId
-} from '../../editor';
+import { getActiveSlideId } from '../../editor';
 import { SlidePreview } from '../preview/slidePreview/SlidePreview';
 import { SlideProperties } from '../properties/SlideProperties';
 import styles from './Workspace.module.css';
@@ -10,9 +8,7 @@ type WorkspaceProps = {
     presentation: Presentation;
 };
 
-function Workspace({
-    presentation
-}: WorkspaceProps)
+function Workspace({ presentation }: WorkspaceProps)
 {
     const activeSlideId = getActiveSlideId();
 

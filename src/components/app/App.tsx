@@ -1,8 +1,5 @@
 import type { Presentation } from '../../types/presentation';
-import {
-    getPreviewMode,
-    setPreviewMode
-} from '../../editor';
+import { getPreviewMode, setPreviewMode } from '../../editor';
 import { Toolbar } from '../toolbar/Toolbar';
 import { SlideList } from '../slideList/SlideList';
 import { Workspace } from '../workspace/Workspace';
@@ -13,9 +10,7 @@ type AppProps = {
     presentation: Presentation;
 };
 
-function App({
-    presentation
-}: AppProps)
+function App({ presentation }: AppProps)
 {
     if (getPreviewMode())
     {

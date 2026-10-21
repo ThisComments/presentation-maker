@@ -64,13 +64,6 @@
     gap: 8px;
 }
 
-.colorRow input
-{
-    width: 100%;
-    min-width: 0;
-    padding: 2px;
-}
-
 .unit
 {
     margin-top: -4px;
