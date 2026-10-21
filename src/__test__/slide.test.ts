@@ -234,7 +234,6 @@ describe('slide actions', () => {
     });
 
     describe('duplicateSlide', () => {
-        // DONE: Переделать тест
         it('duplicates a slide and all its objects', () => {
             const presentation = createPresentation([
                 {

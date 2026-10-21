@@ -30,7 +30,7 @@ describe('presentation actions', () => {
                     description: '',
                     background: {
                         type: 'color',
-                        color: 'white'
+                        color: '#ffffff'
                     },
                     objects: [] 
                 } 
@@ -74,14 +74,26 @@ describe('presentation actions', () => {
             slides: []
         };
 
+        const presentationLoad: Presentation = {
+            id: 'presentation_02',
+            name: 'my_presentation',
+            slides: []
+        };
+
         const json = JSON.stringify(presentation);
-        const loadedPresentation = loadPresentation(json);
+        const loadedPresentation = loadPresentation(presentationLoad, json);
 
         expect(loadedPresentation).toEqual(presentation);
     });
 
     it('load invalid JSON', () => {
-        expect(() => loadPresentation('{invalid json}'))
+        const presentationLoad: Presentation = {
+            id: 'presentation_02',
+            name: 'my_presentation',
+            slides: []
+        };
+
+        expect(() => loadPresentation(presentationLoad, '{invalid json}'))
             .toThrow('Не удалось загрузить презентацию');
     });
 
@@ -90,7 +102,13 @@ describe('presentation actions', () => {
             name: 'my_presentation'
         });
 
-        expect(() => loadPresentation(invalidJson))
+        const presentationLoad: Presentation = {
+            id: 'presentation_02',
+            name: 'my_presentation',
+            slides: []
+        };
+
+        expect(() => loadPresentation(presentationLoad, invalidJson))
             .toThrow('Неверная структура презентации');
     });
 });

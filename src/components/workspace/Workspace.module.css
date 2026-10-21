@@ -1,0 +1,13 @@
+.workspace
+{
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    background: #f1f3f4;
+}
+
+.workspace > :first-child
+{
+    flex: 1;
+}
