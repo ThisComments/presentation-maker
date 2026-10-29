@@ -10,17 +10,13 @@ type SlidePropertiesProps = {
 function SlideProperties({ slide }: SlidePropertiesProps)
 {
     return (
-        <aside className={styles.properties}>
-            <h3 className={styles.title}>
-                Свойства слайда
-            </h3>
-
+        <div className={styles.properties}>
             <SlideBackgroundProperties
                 key={`${slide.id}-${slide.background.type}`}
                 slide={slide}
             />
             <SlideObjectProperties slide={slide} />
-        </aside>
+        </div>
     );
 }
 

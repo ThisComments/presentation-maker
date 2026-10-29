@@ -1,9 +1,10 @@
 import type { Presentation } from '../../types/presentation';
-import { dispatch, setPreviewMode } from '../../editor';
+import { getActiveSlideId, dispatch, setPreviewMode } from '../../editor';
 import { updatePresentationName, savePresentation, loadPresentation } from '../../functions/presentation';
 import { addSlide } from '../../functions/slide';
 import { Button } from '../common/button/Button';
 import { TextInput } from '../common/textInput/TextInput';
+import { SlideProperties } from '../properties/SlideProperties';
 import styles from './Toolbar.module.css';
 
 type ToolbarProps = {
@@ -12,6 +13,9 @@ type ToolbarProps = {
 
 function Toolbar({ presentation }: ToolbarProps)
 {
+    const activeSlideId = getActiveSlideId();
+    const activeSlide = presentation.slides.find(slide => slide.id === activeSlideId);
+
     function handleNameChange(name: string): void
     {
         dispatch(updatePresentationName, name);
@@ -38,34 +42,23 @@ function Toolbar({ presentation }: ToolbarProps)
     }
 
     return (
-        <header className={styles.toolbar}>
-            <TextInput
-                value={presentation.name}
-                placeholder="Название презентации"
-                onChange={handleNameChange}
-                className={styles.nameInput}
-            />
+        <div className={styles.toolbarLayout}>
+            <header className={styles.toolbar}>
+                <TextInput
+                    value={presentation.name}
+                    placeholder="Название презентации"
+                    onChange={handleNameChange}
+                    className={styles.nameInput}
+                />
 
-            <Button
-                text="+ Слайд"
-                onClick={handleAddSlide}
-            />
+                <Button text="+ Слайд" onClick={handleAddSlide} />
+                <Button text="Сохранить" onClick={handleSave} />
+                <Button text="Загрузить" onClick={handleLoad} />
+                <Button text="Предпросмотр" onClick={handlePreview} />
+            </header>
 
-            <Button
-                text="Сохранить"
-                onClick={handleSave}
-            />
-
-            <Button
-                text="Загрузить"
-                onClick={handleLoad}
-            />
-
-            <Button
-                text="Предпросмотр"
-                onClick={handlePreview}
-            />
-        </header>
+            {activeSlide && <SlideProperties slide={activeSlide} />}
+        </div>
     );
 }
 
