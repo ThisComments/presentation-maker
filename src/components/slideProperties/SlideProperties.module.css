@@ -1,0 +1,47 @@
+.panel {
+    width: 280px;
+    padding: 10px;
+    overflow-y: auto;
+    background: #ffffff;
+    border-left: 1px solid #d6d9de;
+}
+
+.section {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #d6d9de;
+}
+
+.heading {
+    margin: 0 0 10px;
+    font-size: 16px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.group {
+    margin-top: 12px;
+}
+
+.groupTitle {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.angle {
+    width: 70px;
+}
+
+.buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.unit {
+    color: #6b7280;
+}

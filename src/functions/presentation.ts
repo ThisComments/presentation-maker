@@ -179,6 +179,7 @@ function isTextStyle(
 }
 
 function loadPresentation(
+    presentation: Presentation,
     json: string
 ): Presentation
 {
@@ -198,12 +199,36 @@ function loadPresentation(
         throw new Error('Неверная структура презентации');
     }
 
-    return value;
+    presentation = value;
+
+    return presentation;
+}
+
+function modifySlide(
+    presentation: Presentation,
+    {
+        slideId,
+        modifier
+    }: {
+        slideId: string;
+        modifier: (slide: Slide) => Slide;
+    }
+): Presentation
+{
+    return {
+        ...presentation,
+        slides: presentation.slides.map(slide =>
+            slide.id === slideId
+                ? modifier(slide)
+                : slide
+        )
+    };
 }
 
 export {
     createPresentation,
     updatePresentationName,
     savePresentation,
-    loadPresentation
+    loadPresentation,
+    modifySlide
 };

@@ -1,0 +1,6 @@
+.slide {
+    position: relative;
+    overflow: hidden;
+    container-type: inline-size;
+    background-color: #ffffff;
+}

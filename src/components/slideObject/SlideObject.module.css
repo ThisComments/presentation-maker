@@ -1,0 +1,17 @@
+.text,
+.media {
+    position: absolute;
+    margin: 0;
+}
+
+.text {
+    overflow: hidden;
+    line-height: 1.2;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.media {
+    display: block;
+    object-fit: contain;
+}

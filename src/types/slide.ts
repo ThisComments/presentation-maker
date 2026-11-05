@@ -31,7 +31,7 @@ type GradientBackground = {
 
 const defaultBackground: Background = {
     type: 'color',
-    color: 'white'
+    color: '#ffffff'
 };
 
 export type { 

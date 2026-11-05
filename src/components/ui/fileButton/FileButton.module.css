@@ -1,0 +1,16 @@
+.fileButton {
+    display: inline-block;
+    padding: 7px 12px;
+    background: #ffffff;
+    border: 1px solid #d6d9de;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.fileButton:hover {
+    background: #eef0f3;
+}
+
+.input {
+    display: none;
+}

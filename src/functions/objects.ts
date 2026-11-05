@@ -25,11 +25,19 @@ function addObjectToSlide(
 
 function addTextObject(
     slide: Slide,
-    objectId: string,
-    position: Point,
-    size: Size,
-    text: string,
-    textStyle: TextStyle
+    {
+        objectId,
+        position,
+        size,
+        text,
+        textStyle
+    }: {
+        objectId: string;
+        position: Point;
+        size: Size;
+        text: string;
+        textStyle: TextStyle;
+    }
 ): Slide
 {
     const newObject: TextObject = {
@@ -46,11 +54,19 @@ function addTextObject(
 
 function addMediaObject(
     slide: Slide,
-    objectId: string,
-    position: Point,
-    size: Size,
-    src: string,
-    mediaType: MediaType
+    {
+        objectId,
+        position,
+        size,
+        src,
+        mediaType
+    }: {
+        objectId: string;
+        position: Point;
+        size: Size;
+        src: string;
+        mediaType: MediaType;
+    }
 ): Slide
 {
     const newObject: MediaObject = {
