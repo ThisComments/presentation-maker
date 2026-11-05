@@ -1,13 +1,25 @@
-.workspace
-{
+.workspace {
     display: flex;
     flex: 1;
-    min-width: 0;
-    min-height: 0;
-    background: #f1f3f4;
+    overflow: hidden;
 }
 
-.workspace > :first-child
-{
+.canvas {
+    display: flex;
     flex: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow: auto;
+}
+
+.slide {
+    width: 100%;
+    max-width: 960px;
+    box-shadow: 0 16px rgba(0, 0, 0, 0.18);
+}
+
+.empty {
+    margin: auto;
+    color: #6b7280;
 }

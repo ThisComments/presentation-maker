@@ -1,16 +1,18 @@
-.toolbar
-{
+.toolbar {
     display: flex;
     align-items: center;
-    gap: 8px;
-    height: 56px;
-    padding: 0 16px;
-    border-bottom: 1px solid #dadce0;
+    justify-content: space-between;
+    padding: 10px;
     background: #ffffff;
+    border-bottom: 1px solid #d6d9de;
 }
 
-.nameInput
-{
-    width: 240px;
-    margin-right: auto;
+.name {
+    width: 200px;
+    font-size: 16px;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
 }

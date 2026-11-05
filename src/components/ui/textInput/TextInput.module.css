@@ -1,0 +1,19 @@
+.input {
+    min-width: 0;
+    padding: 6px 10px;
+    color: #000000;
+    background: #ffffff;
+    border: 1px solid #d6d9de;
+    border-radius: 6px;
+}
+
+.input:hover {
+    border-color: #aeb4bd;
+}
+
+.color {
+    width: 44px;
+    height: 32px;
+    padding: 2px;
+    cursor: pointer;
+}

@@ -1,71 +1,43 @@
-import type { Presentation } from '../../types/presentation';
-import { dispatch, setPreviewMode } from '../../editor';
-import { updatePresentationName, savePresentation, loadPresentation } from '../../functions/presentation';
-import { addSlide } from '../../functions/slide';
-import { Button } from '../common/button/Button';
-import { TextInput } from '../common/textInput/TextInput';
+import type { Presentation } from '../../types/presentation.js';
+import { updatePresentationName } from '../../functions/presentation.js';
+import { dispatch, addNewSlide, setPreviewMode } from '../../editor.js';
+import { TextInput } from '../ui/textInput/TextInput.js';
+import { Button } from '../ui/button/Button.js';
 import styles from './Toolbar.module.css';
 
 type ToolbarProps = {
     presentation: Presentation;
-};
+}
 
-function Toolbar({ presentation }: ToolbarProps)
+function Toolbar({ 
+    presentation 
+}: ToolbarProps)
 {
-    function handleNameChange(name: string): void
-    {
-        dispatch(updatePresentationName, name);
-    }
-
-    function handleAddSlide(): void
-    {
-        dispatch(addSlide, crypto.randomUUID());
-    }
-
-    function handleSave(): void
-    {
-        localStorage.setItem('savePresentation', savePresentation(presentation));
-    }
-
-    function handleLoad(): void
-    {
-        dispatch(loadPresentation, localStorage.getItem('savePresentation'));
-    }
-
-    function handlePreview(): void
-    {
-        setPreviewMode(true);
-    }
-
     return (
-        <header className={styles.toolbar}>
+        <div className={styles.toolbar}>
             <TextInput
+                className={styles.name}
                 value={presentation.name}
                 placeholder="Название презентации"
-                onChange={handleNameChange}
-                className={styles.nameInput}
+                onChange={name => dispatch(updatePresentationName, name)}
             />
-
-            <Button
-                text="+ Слайд"
-                onClick={handleAddSlide}
-            />
-
-            <Button
-                text="Сохранить"
-                onClick={handleSave}
-            />
-
-            <Button
-                text="Загрузить"
-                onClick={handleLoad}
-            />
-
-            <Button
-                text="Предпросмотр"
-                onClick={handlePreview}
-            />
-        </header>
+            <div className={styles.actions}>
+                <Button
+                    text="Добавить слайд"
+                    onClick={() => addNewSlide(crypto.randomUUID())}
+                />
+                <Button
+                    text="Сохранить"
+                    onClick={() => {}}
+                />
+                <Button
+                    text="Просмотр"
+                    variant="primary"
+                    disabled={presentation.slides.length === 0}
+                    onClick={() => setPreviewMode(true)}
+                />
+            </div>
+        </div>
     );
 }
 

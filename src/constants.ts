@@ -1,0 +1,14 @@
+const SLIDE_WIDTH = 960;
+const SLIDE_HEIGHT = 540;
+
+const DEFAULT_COLOR = '#ffffff';
+const DEFAULT_GRADIENT_COLORS = ['#ffffff', '#4a90d9'];
+const DEFAULT_GRADIENT_ANGLE = 90;
+
+export {
+    SLIDE_WIDTH,
+    SLIDE_HEIGHT,
+    DEFAULT_COLOR,
+    DEFAULT_GRADIENT_COLORS,
+    DEFAULT_GRADIENT_ANGLE,
+};

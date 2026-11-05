@@ -1,38 +1,40 @@
-import type { Presentation } from '../../types/presentation';
-import { getActiveSlideId } from '../../editor';
-import { SlidePreview } from '../preview/slidePreview/SlidePreview';
-import { SlideProperties } from '../properties/SlideProperties';
+import type { Presentation } from '../../types/presentation.js';
+import { getActiveSlideId } from '../../editor.js';
+import { SlidePreview } from '../slidePreview/SlidePreview.js';
+import { SlideProperties } from '../slideProperties/SlideProperties.js';
 import styles from './Workspace.module.css';
 
 type WorkspaceProps = {
     presentation: Presentation;
-};
+}
 
-function Workspace({ presentation }: WorkspaceProps)
+function Workspace({ 
+    presentation 
+}: WorkspaceProps)
 {
     const activeSlideId = getActiveSlideId();
 
-    const activeSlide = presentation.slides.find(
-        slide => slide.id === activeSlideId
-    );
+    const slide = presentation.slides.find(slide => slide.id === activeSlideId)
+        || presentation.slides[0];
 
-    if (!activeSlide)
+    if (!slide)
     {
         return (
-            <main className={styles.workspace}>
-                <p>Выберите слайд</p>
-            </main>
+            <div className={styles.workspace}>
+                <p className={styles.empty}>
+                    Нет слайдов. Нажмите "Добавить слайд", чтобы начать.
+                </p>
+            </div>
         );
     }
 
     return (
-        <main className={styles.workspace}>
-            <SlidePreview slide={activeSlide} />
-
-            <SlideProperties
-                slide={activeSlide}
-            />
-        </main>
+        <div className={styles.workspace}>
+            <div className={styles.canvas}>
+                <SlidePreview slide={slide} className={styles.slide} />
+            </div>
+            <SlideProperties slide={slide} />
+        </div>
     );
 }
 

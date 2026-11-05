@@ -2,25 +2,29 @@ import styles from './Button.module.css';
 
 type ButtonProps = {
     text: string;
-    onClick?: () => void;
+    onClick: () => void;
     className?: string;
-    type?: 'button' | 'submit';
     disabled?: boolean;
-};
+    variant?: 'primary' | 'secondary' | 'danger';
+}
 
 function Button({
     text,
     onClick,
-    className,
-    type = 'button',
-    disabled = false
+    className = '',
+    disabled = false,
+    variant = 'secondary'
 }: ButtonProps)
 {
     return (
         <button
-            className={`${styles.button} ${className ?? ''}`}
+            type="button"
+            className={`
+                ${styles.button} 
+                ${styles[variant]} 
+                ${className}
+            `}
             onClick={onClick}
-            type={type}
             disabled={disabled}
         >
             {text}

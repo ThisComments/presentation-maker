@@ -1,93 +1,85 @@
-import { Component } from 'react';
-import type { MouseEvent } from 'react';
 import type { Presentation } from '../../types/presentation.js';
 import {
     getActiveSlideId,
     setActiveSlide,
-    deleteSlides
+    requestSlideDeletion,
+    cancelSlideDeletion,
+    confirmSlideDeletion,
+    getPendingDeleteSlideId
 } from '../../editor.js';
-import { SlidePreview } from '../preview/slidePreview/SlidePreview.js';
+import { SlidePreview } from '../slidePreview/SlidePreview.js';
+import { ConfirmDeleteDialog } from '../confirmDeleteDialog/ConfirmDeleteDialog.js';
+import { Button } from '../ui/button/Button.js';
 import styles from './SlideList.module.css';
-import { ConfirmDeleteDialog } from './ConfirmDeleteDialog.js';
 
 type SlideListProps = {
     presentation: Presentation;
-};
+}
 
-type SlideListState = {
-    slideToDelete: string | null;
-};
-
-class SlideList extends Component<SlideListProps, SlideListState>
+function SlideList({ 
+    presentation 
+}: SlideListProps)
 {
-    state: SlideListState = {
-        slideToDelete: null
-    };
+    const activeSlideId = getActiveSlideId();
+    const pendingDeleteId = getPendingDeleteSlideId();
+    const pendingSlide = presentation.slides.find(
+        slide => slide.id === pendingDeleteId
+    );
 
-    handleSlideClick = (slideId: string): void =>
-    {
-        setActiveSlide(slideId);
-    };
+    return (
+        <div className={styles.sidebar}>
+            {presentation.slides.length === 0 && (
+                <p className={styles.empty}>Слайдов пока нет</p>
+            )}
 
-    handleContextMenu = (event: MouseEvent<HTMLDivElement>, slideId: string): void =>
-    {
-        event.preventDefault();
-        this.setState({ slideToDelete: slideId });
-    };
+            <ol className={styles.list}>
+                {presentation.slides.map((slide, index) =>
+                {
+                    const isActive = slide.id === activeSlideId;
 
-    handleCancelDelete = (): void =>
-    {
-        this.setState({ slideToDelete: null });
-    };
+                    return (
+                        <li key={slide.id} className={styles.item}>
+                            <div
+                                className={`
+                                    ${styles.thumbnail}
+                                    ${isActive 
+                                        ? styles.active 
+                                        : ''}
+                                `}
+                            >
+                                <SlidePreview slide={slide} />
+                                <button
+                                    type="button"
+                                    className={styles.select}
+                                    onClick={() => setActiveSlide(slide.id)}
+                                />
+                            </div>
 
-    handleConfirmDelete = (): void =>
-    {
-        const { slideToDelete } = this.state;
+                            <div className={styles.footer}>
+                                <span className={styles.name}>
+                                    {index + 1}. {slide.name}
+                                </span>
+                                <Button
+                                    text="Удалить"
+                                    variant="danger"
+                                    className={styles.delete}
+                                    onClick={() => requestSlideDeletion(slide.id)}
+                                />
+                            </div>
+                        </li>
+                    );
+                })}
+            </ol>
 
-        if (slideToDelete === null)
-        {
-            return;
-        }
-
-        deleteSlides([slideToDelete]);
-        this.setState({ slideToDelete: null });
-    };
-
-    render()
-    {
-        const { presentation } = this.props;
-        const { slideToDelete } = this.state;
-        const activeSlideId = getActiveSlideId();
-        const slide = presentation.slides.find(item => item.id === slideToDelete);
-
-        return (
-            <>
-                <aside className={styles.list}>
-                    {presentation.slides.map(slide => (
-                        <div
-                            key={slide.id}
-                            className={slide.id === activeSlideId ? styles.active : styles.item}
-                            onClick={() => this.handleSlideClick(slide.id)}
-                            onContextMenu={event =>
-                                this.handleContextMenu(event, slide.id)
-                            }
-                        >
-                            <SlidePreview slide={slide} />
-                            <span>{slide.name}</span>
-                        </div>
-                    ))}
-                </aside>
-
-                {slide && (
-                    <ConfirmDeleteDialog
-                        slideName={slide.name}
-                        onConfirm={this.handleConfirmDelete}
-                        onCancel={this.handleCancelDelete}
-                    />
-                )}
-            </>
-        );
-    }
+            {pendingSlide && (
+                <ConfirmDeleteDialog
+                    slideName={pendingSlide.name}
+                    onConfirm={confirmSlideDeletion}
+                    onCancel={cancelSlideDeletion}
+                />
+            )}
+        </div>
+    );
 }
 
 export { SlideList };
